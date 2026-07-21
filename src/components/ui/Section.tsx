@@ -17,6 +17,9 @@ type SectionProps = {
   theme?: keyof typeof THEMES;
   /** Vertical rhythm. "none" for sections that manage their own spacing. */
   spacing?: "default" | "compact" | "none";
+  /** Clip overflow (default true). Set false to allow a `pinned` sticky
+   *  background to pin to the viewport (overflow-hidden breaks position:sticky). */
+  clip?: boolean;
   /** Ref to the section root — pass a section's animation scope here. */
   ref?: Ref<HTMLElement>;
   className?: string;
@@ -39,6 +42,7 @@ export function Section({
   chapter,
   theme = "ink-950",
   spacing = "default",
+  clip = true,
   ref,
   className,
   children,
@@ -48,7 +52,8 @@ export function Section({
       id={id}
       ref={ref}
       className={cn(
-        "relative isolate w-full overflow-hidden",
+        "relative isolate w-full",
+        clip && "overflow-hidden",
         THEMES[theme],
         SPACING[spacing],
         className,
