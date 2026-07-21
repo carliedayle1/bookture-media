@@ -8,6 +8,8 @@ import { FeaturedWorks } from "@/components/sections/FeaturedWorks";
 import { PressMarquee } from "@/components/sections/PressMarquee";
 import { StudioFilm } from "@/components/sections/StudioFilm";
 import { Voices } from "@/components/sections/Voices";
+import { AuthorSpotlight } from "@/components/sections/AuthorSpotlight";
+import { Services } from "@/components/sections/Services";
 import { GlobalReach } from "@/components/sections/GlobalReach";
 import { BeginYourBook } from "@/components/sections/BeginYourBook";
 import { SiteFooter } from "@/components/sections/SiteFooter";
@@ -34,6 +36,8 @@ export default function Home() {
         <PressMarquee />
         <StudioFilm />
         <Voices />
+        <AuthorSpotlight />
+        <Services />
         <GlobalReach />
         <BeginYourBook />
       </main>

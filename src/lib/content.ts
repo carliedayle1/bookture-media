@@ -17,8 +17,8 @@ export const siteConfig = {
   nav: [
     { label: "The Craft", href: "#craft" },
     { label: "Works", href: "#works" },
-    { label: "The Studio", href: "#studio" },
     { label: "Voices", href: "#voices" },
+    { label: "Services", href: "#services" },
   ] satisfies NavLink[],
   socials: [
     { label: "Instagram", href: "https://instagram.com", handle: "@bookturemedia" },
@@ -240,7 +240,7 @@ export type ReachContent = {
 };
 
 export const reachContent: ReachContent = {
-  chapter: { numeral: "VI", label: "The Reach" },
+  chapter: { numeral: "VIII", label: "The Reach" },
   earthTexture: "/textures/earth-day.jpg",
   cloudsTexture: "/textures/earth-clouds.png",
   headline: "Every bookshop that still smells like a bookshop.",
@@ -267,7 +267,7 @@ export type CtaContent = {
 };
 
 export const ctaContent: CtaContent = {
-  chapter: { numeral: "VII", label: "Begin" },
+  chapter: { numeral: "IX", label: "Begin" },
   headline: [{ text: "Send us the first " }, { text: "fifty pages", emphasis: true }, { text: "." }],
   intro: "We read every submission ourselves. Tell us who you are and what you're writing — you'll hear back from a real editor, not an auto-reply.",
   loadingLabel: "Reaching the editor's desk…",
@@ -293,9 +293,74 @@ export const chapters: { numeral: string; id: string; label: string }[] = [
   { numeral: "III", id: "works", label: "Featured Works" },
   { numeral: "IV", id: "studio", label: "The Studio" },
   { numeral: "V", id: "voices", label: "Voices" },
-  { numeral: "VI", id: "reach", label: "The Reach" },
-  { numeral: "VII", id: "begin", label: "Begin" },
+  { numeral: "VI", id: "spotlight", label: "Author Spotlight" },
+  { numeral: "VII", id: "services", label: "What We Offer" },
+  { numeral: "VIII", id: "reach", label: "The Reach" },
+  { numeral: "IX", id: "begin", label: "Begin" },
 ];
+
+export type AuthorSpotlightContent = {
+  chapter: { numeral: string; label: string };
+  eyebrow: string;
+  name: string;
+  title: string;
+  bio: string;
+  pullQuote: string;
+  /** Optional interview clip (muted loop / poster). Empty = placeholder frame. */
+  videoSrc: string;
+};
+
+export const authorSpotlightContent: AuthorSpotlightContent = {
+  chapter: { numeral: "VI", label: "Author Spotlight" },
+  eyebrow: "In conversation",
+  name: "Marisa Okonkwo",
+  title: "Author of The Salt Almanac",
+  bio: "Marisa spent nine years and three abandoned drafts on the book that would become The Salt Almanac. We sat with her in the reading room to talk about the sea, memory, and the ledger that started writing back.",
+  pullQuote: "They didn't publish my book. They helped me finish it, then made it beautiful.",
+  // SWAP POINT: drop an interview clip here, e.g. "/video/spotlight.mp4".
+  videoSrc: "",
+};
+
+export type Service = { title: string; body: string };
+
+export type ServicesContent = {
+  chapter: { numeral: string; label: string };
+  headline: string;
+  intro: string;
+  items: Service[];
+};
+
+export const servicesContent: ServicesContent = {
+  chapter: { numeral: "VII", label: "What We Offer" },
+  headline: "More than a printer. A partner for the whole life of the book.",
+  intro: "Publishing a book is the beginning. Getting it read is the work. Beyond editing and printing, we run the campaigns, the submissions, and the events that carry a title into the world.",
+  items: [
+    {
+      title: "Media Campaigns",
+      body: "Press outreach, review placement, and social strategy built around each title — pitched to the outlets that actually cover your genre.",
+    },
+    {
+      title: "Award Submissions",
+      body: "We track the prizes worth entering, prepare the submissions, and meet every deadline so your book is in the running.",
+    },
+    {
+      title: "Book Launch Events",
+      body: "From an intimate reading room evening to a festival stage — we plan, host, and produce launches that feel like occasions.",
+    },
+    {
+      title: "Author Website Development",
+      body: "A considered home for your work: fast, beautiful, and yours — with a bookshop, a mailing list, and room to grow.",
+    },
+    {
+      title: "Rights & Translation",
+      body: "We represent your book to foreign publishers and negotiate translation deals, extending its reach into new languages.",
+    },
+    {
+      title: "Audiobook Production",
+      body: "Casting, direction, and studio production for an audiobook edition that honours the voice on the page.",
+    },
+  ],
+};
 
 export const footerContent = {
   columns: [
