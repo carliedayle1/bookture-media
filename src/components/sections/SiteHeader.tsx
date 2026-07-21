@@ -52,7 +52,10 @@ export function SiteHeader() {
           scrolled ? "bg-surface/80 border-foreground/10 backdrop-blur-md" : "border-transparent bg-transparent",
         )}
       />
-      <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]">
+      <div
+        data-header-inner
+        className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]"
+      >
         {/* Invisible spacer reserving the docking spot for the animated HeroLogo. */}
         <span aria-hidden className="pointer-events-none opacity-0">
           <Logo variant="mark" height={34} withWordmark />

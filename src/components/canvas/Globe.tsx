@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -27,6 +27,34 @@ function latLngToVec3(lat: number, lng: number, r = R) {
 export function Globe() {
   const group = useRef<THREE.Group>(null);
   const packets = useRef<THREE.Group>(null);
+  const baseMat = useRef<THREE.MeshStandardMaterial>(null);
+
+  // Optional: swap in a real equirectangular Earth texture when provided.
+  useEffect(() => {
+    const url = reachContent.earthTexture;
+    if (!url) {
+      return;
+    }
+    const loader = new THREE.TextureLoader();
+    loader.load(
+      url,
+      (tex) => {
+        tex.colorSpace = THREE.SRGBColorSpace;
+        const mat = baseMat.current;
+        if (mat) {
+          mat.map = tex;
+          mat.color.set("#ffffff");
+          mat.emissive.set("#0a1424");
+          mat.emissiveIntensity = 0.12;
+          mat.needsUpdate = true;
+        }
+      },
+      undefined,
+      () => {
+        /* texture missing — keep the stylized planet */
+      },
+    );
+  }, []);
 
   // Fibonacci-distributed dots forming the globe surface.
   const dotGeo = useMemo(() => {
@@ -94,19 +122,30 @@ export function Globe() {
 
   return (
     <group ref={group} rotation={[0.32, 0, 0.08]}>
-      {/* opaque core occludes back-facing dots/arcs */}
+      {/* lit ocean planet — occludes back-facing dots/arcs */}
       <mesh>
-        <sphereGeometry args={[R * 0.99, 48, 48]} />
-        <meshStandardMaterial color="#101827" roughness={0.9} metalness={0.1} />
+        <sphereGeometry args={[R * 0.99, 64, 64]} />
+        <meshStandardMaterial
+          ref={baseMat}
+          color="#123a72"
+          emissive="#0a1f42"
+          emissiveIntensity={0.45}
+          roughness={0.65}
+          metalness={0.1}
+        />
       </mesh>
-      {/* rim atmosphere */}
+      {/* atmosphere halo */}
       <mesh>
-        <sphereGeometry args={[R * 1.06, 48, 48]} />
-        <meshBasicMaterial color="#d6ae5c" transparent opacity={0.05} side={THREE.BackSide} />
+        <sphereGeometry args={[R * 1.1, 64, 64]} />
+        <meshBasicMaterial color="#4a86d8" transparent opacity={0.12} side={THREE.BackSide} />
       </mesh>
-      {/* dotted surface */}
+      <mesh>
+        <sphereGeometry args={[R * 1.02, 64, 64]} />
+        <meshBasicMaterial color="#7db0f0" transparent opacity={0.06} side={THREE.BackSide} />
+      </mesh>
+      {/* dotted graticule surface */}
       <points geometry={dotGeo}>
-        <pointsMaterial color="#b6a684" size={0.024} sizeAttenuation transparent opacity={0.85} />
+        <pointsMaterial color="#dcd0b4" size={0.028} sizeAttenuation transparent opacity={0.9} />
       </points>
       {/* hub markers */}
       {hubs.map((h) => (
@@ -129,7 +168,7 @@ export function Globe() {
       {/* distribution arcs */}
       {arcs.map((a, i) => (
         <mesh key={i} geometry={a.geo}>
-          <meshBasicMaterial color="#d6ae5c" transparent opacity={0.55} />
+          <meshBasicMaterial color="#efdca8" transparent opacity={0.8} />
         </mesh>
       ))}
       {/* traveling packets */}

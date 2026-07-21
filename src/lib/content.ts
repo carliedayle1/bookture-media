@@ -34,10 +34,14 @@ export type HeroContent = {
   lede: string;
   primaryCta: NavLink;
   secondaryCta: NavLink;
+  /** Optional looping background video (muted). Empty = procedural backdrop. */
+  backgroundVideo?: string;
 };
 
 export const heroContent: HeroContent = {
   eyebrow: "Independent literary publishing since 1994",
+  // SWAP POINT: drop a looping hero clip here, e.g. "/video/hero-loop.mp4".
+  backgroundVideo: "",
   headline: [
     { text: "We turn manuscripts into a " },
     { text: "legacy", emphasis: true },
@@ -228,10 +232,14 @@ export type ReachContent = {
   stat: string;
   copy: string;
   hubs: ReachHub[];
+  /** Optional equirectangular Earth texture for a photoreal globe. Empty =
+   *  stylized glowing planet. SWAP POINT: e.g. "/textures/earth.jpg". */
+  earthTexture?: string;
 };
 
 export const reachContent: ReachContent = {
   chapter: { numeral: "VI", label: "The Reach" },
+  earthTexture: "",
   headline: "Every bookshop that still smells like a bookshop.",
   stat: "47 languages · 92 countries",
   copy: "From a single reading room, our titles travel into translation and onto shelves across the world. We ship to the independents first — the shops that hand-sell, the libraries that keep books in circulation for decades.",

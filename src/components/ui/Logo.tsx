@@ -32,6 +32,7 @@ export function Logo({
         height={height}
         width={Math.round((logoSrc.width / logoSrc.height) * height)}
         priority={priority}
+        unoptimized
         className={className}
       />
     );
@@ -45,6 +46,7 @@ export function Logo({
         height={height}
         width={Math.round((markSrc.width / markSrc.height) * height)}
         priority={priority}
+        unoptimized
       />
       {withWordmark ? (
         <span className="font-display text-parchment-100 text-lg leading-none font-medium tracking-wide">

@@ -24,24 +24,29 @@ export function HeroLogo() {
     ({ root }) => {
       const el = root as HTMLElement;
       let start = { x: 0, y: 0, s: 1 };
-      let end = { x: 0, y: 0, s: 1 };
-
-      const readVar = (name: string, fallback: number) => {
-        const v = parseFloat(getComputedStyle(document.documentElement).getPropertyValue(name));
-        return Number.isFinite(v) ? v : fallback;
-      };
+      let end = { x: 24, y: 22, s: 1 };
 
       const layout = () => {
         const naturalW = el.offsetWidth;
         const naturalH = el.offsetHeight;
         const vw = window.innerWidth;
         const vh = window.innerHeight;
-        const gutter = readVar("--edge-gutter", 24);
-        const headerH = readVar("--header-height", 80);
-        const contentLeft = Math.max(gutter, (vw - Math.min(vw, 1408)) / 2 + gutter);
-        const startS = Math.min(2, (vw * 0.82) / naturalW);
-        start = { x: (vw - naturalW * startS) / 2, y: vh * 0.14, s: startS };
-        end = { x: contentLeft, y: (headerH - naturalH) / 2, s: 1 };
+
+        // Dock target = the header's invisible logo spacer position, derived from
+        // the real header element (avoids parsing rem/clamp CSS-var strings).
+        const inner = document.querySelector<HTMLElement>("[data-header-inner]");
+        let dockX = 24;
+        let dockY = 22;
+        if (inner) {
+          const rect = inner.getBoundingClientRect();
+          const padLeft = parseFloat(getComputedStyle(inner).paddingLeft) || 0;
+          dockX = rect.left + padLeft; // unaffected by the header's vertical hide
+          dockY = (inner.offsetHeight - naturalH) / 2;
+        }
+
+        const startS = Math.min(1.7, (vw * 0.72) / naturalW);
+        start = { x: (vw - naturalW * startS) / 2, y: vh * 0.16, s: startS };
+        end = { x: dockX, y: dockY, s: 1 };
       };
 
       const apply = (p: number) => {
@@ -57,8 +62,8 @@ export function HeroLogo() {
       const st = ScrollTrigger.create({
         trigger: "#hero",
         start: "top top",
-        end: "+=72%",
-        scrub: true,
+        end: "+=45%",
+        scrub: 0.6,
         onUpdate: (self) => apply(self.progress),
         onRefresh: (self) => {
           layout();

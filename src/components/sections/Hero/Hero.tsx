@@ -1,71 +1,44 @@
-"use client";
-
-import { useEffect, useRef } from "react";
-import dynamic from "next/dynamic";
-
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ScrollCue } from "@/components/ui/ScrollCue";
 import { GoldParticles } from "@/components/ui/GoldParticles";
-import { ScrollTrigger } from "@/lib/gsap";
-import { useAnimation } from "@/hooks/useAnimation";
-import { useReducedMotion } from "@/components/providers/MotionProvider";
-import { heroScroll } from "@/lib/scroll-state";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { heroContent, siteConfig } from "@/lib/content";
 import { HeroPoster } from "./HeroPoster";
 
-// three.js stays in its own chunk; only mounts client-side over the poster.
-const HeroCanvas = dynamic(() => import("@/components/canvas/HeroCanvas"), {
-  ssr: false,
-  loading: () => null,
-});
-
 /**
- * Hero — the opening statement. A procedural R3F book floats over the poster
- * (skipped under reduced motion, poster stays). Scroll progress and pointer
- * position feed the canvas via the heroScroll bridge (no React re-renders).
+ * Hero — the opening statement. A procedural atmosphere backs the headline, with
+ * drifting gold dust on top. If `heroContent.backgroundVideo` is set, a muted
+ * loop plays behind everything (reduced-motion falls back to the poster).
+ *
+ * The animated brand logo that starts here and docks to the navbar lives in
+ * <HeroLogo /> (mounted at the page root so it can be position: fixed).
  */
 export function Hero() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const reducedMotion = useReducedMotion();
-
-  // Feed scroll progress into the canvas.
-  useAnimation(
-    ({ root }) => {
-      ScrollTrigger.create({
-        trigger: root,
-        start: "top top",
-        end: "bottom top",
-        scrub: true,
-        onUpdate: (self) => {
-          heroScroll.progress = self.progress;
-        },
-      });
-    },
-    { scope: sectionRef },
-  );
-
-  // Feed pointer position into the canvas (micro-parallax).
-  useEffect(() => {
-    if (reducedMotion) {
-      return;
-    }
-    const onMove = (e: PointerEvent) => {
-      heroScroll.pointerX = (e.clientX / window.innerWidth) * 2 - 1;
-      heroScroll.pointerY = (e.clientY / window.innerHeight) * 2 - 1;
-    };
-    window.addEventListener("pointermove", onMove);
-    return () => window.removeEventListener("pointermove", onMove);
-  }, [reducedMotion]);
+  const hasVideo = Boolean(heroContent.backgroundVideo);
 
   return (
     <section
-      ref={sectionRef}
       id="hero"
       className="relative isolate flex min-h-screen items-center overflow-hidden"
     >
       <HeroPoster />
-      {!reducedMotion ? <HeroCanvas /> : null}
+      {hasVideo ? (
+        <>
+          <AmbientVideo
+            src={heroContent.backgroundVideo as string}
+            className="absolute inset-0 -z-[6] h-full w-full object-cover"
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 -z-[5]"
+            style={{
+              backgroundImage:
+                "radial-gradient(120% 100% at 30% 40%, rgb(var(--atmo-base) / 0.35), rgb(var(--atmo-base) / 0.8) 100%)",
+            }}
+          />
+        </>
+      ) : null}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4]">
         <GoldParticles density={36} />
       </div>
