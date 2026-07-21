@@ -49,6 +49,11 @@ export function SmoothScrollProvider({ children }: { children: ReactNode }) {
 
     instance.on("scroll", ScrollTrigger.update);
 
+    // Dev-only handle for debugging/tooling (e.g. driving scroll in previews).
+    if (process.env.NODE_ENV !== "production") {
+      (window as unknown as { __lenis?: Lenis }).__lenis = instance;
+    }
+
     const tick = (time: number) => instance.raf(time * 1000);
     gsap.ticker.add(tick);
     gsap.ticker.lagSmoothing(0);
