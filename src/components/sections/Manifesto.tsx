@@ -5,12 +5,12 @@ import { useRef } from "react";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
-import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { ThemedBackground } from "@/components/ui/ThemedBackground";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useAnimation } from "@/hooks/useAnimation";
 import { manifestoContent as c } from "@/lib/content";
 
-const SCENE_VARIANTS = ["library", "desk", "press"] as const;
+const SCENE_IMAGES = ["reading-room", "editors-desk", "the-press"] as const;
 
 /**
  * The Belief — sticky-scroll manifesto. The media column pins (CSS sticky, so
@@ -57,7 +57,7 @@ export function Manifesto() {
             <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-foreground/10">
               {c.scenes.map((scene, i) => (
                 <div key={scene.id} className="manifesto-scene absolute inset-0">
-                  <AtmosphereBackground variant={SCENE_VARIANTS[i]} vignette kenBurns />
+                  <ThemedBackground name={SCENE_IMAGES[i]} scrim="bottom" kenBurns />
                   <div className="absolute inset-x-0 bottom-0 p-6">
                     <p className="text-parchment-500 font-mono text-xs tracking-widest uppercase">
                       {scene.caption}

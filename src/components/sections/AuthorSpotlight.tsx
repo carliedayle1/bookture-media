@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
-import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { ThemedBackground } from "@/components/ui/ThemedBackground";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { authorSpotlightContent as c } from "@/lib/content";
 
@@ -19,7 +19,7 @@ export function AuthorSpotlight() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* video / placeholder frame */}
           <div className="border-foreground/10 relative aspect-video overflow-hidden rounded-2xl border">
-            <AtmosphereBackground variant="desk" />
+            <ThemedBackground name="spotlight" scrim="center" />
             {hasVideo ? (
               <AmbientVideo src={c.videoSrc} className="absolute inset-0 h-full w-full object-cover" />
             ) : null}

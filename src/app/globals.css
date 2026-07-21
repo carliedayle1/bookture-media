@@ -113,6 +113,7 @@
   --atmo-base: 8 11 20; /* deep vignette colour */
   --atmo-accent: 214 174 92; /* gold glow */
   --atmo-metal: 150 150 170; /* cool press light */
+  --surface-rgb: 8 11 20; /* page-surface as RGB, for theme-aware image scrims */
 
   /* Runtime-only vars (not utilities) */
   --header-height: 5rem;
@@ -142,8 +143,24 @@
   --atmo-base: 92 74 48; /* warm sepia vignette on parchment */
   --atmo-accent: 176 132 52;
   --atmo-metal: 120 108 92;
+  --surface-rgb: 239 231 215; /* parchment surface as RGB */
 
   color-scheme: light;
+}
+
+/* Theme-toggled background layers: show the dark asset in dark theme, the light
+   asset in light theme (both are rendered; CSS controls which is visible). */
+.themed-dark {
+  opacity: 1;
+}
+.themed-light {
+  opacity: 0;
+}
+:root[data-theme="light"] .themed-dark {
+  opacity: 0;
+}
+:root[data-theme="light"] .themed-light {
+  opacity: 1;
 }
 
 @layer base {

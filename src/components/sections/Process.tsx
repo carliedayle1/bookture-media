@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
 import { TiltCard } from "@/components/ui/TiltCard";
-import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { ThemedBackground } from "@/components/ui/ThemedBackground";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useAnimation } from "@/hooks/useAnimation";
 import { processSteps } from "@/lib/content";
@@ -68,7 +68,7 @@ export function Process() {
       chapter={{ numeral: "II", label: "The Craft" }}
       theme="ink-900"
     >
-      <AtmosphereBackground variant="forest" vignette={false} />
+      <ThemedBackground name="craft" scrim="vignette" />
       <Container size="default">
         <RevealText
           as="h2"

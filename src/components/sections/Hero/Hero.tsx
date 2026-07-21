@@ -2,9 +2,9 @@ import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ScrollCue } from "@/components/ui/ScrollCue";
 import { GoldParticles } from "@/components/ui/GoldParticles";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { heroContent, siteConfig } from "@/lib/content";
 import { HeroPoster } from "./HeroPoster";
+import { HeroVideo } from "./HeroVideo";
 
 /**
  * Hero — the opening statement. A procedural atmosphere backs the headline, with
@@ -15,30 +15,13 @@ import { HeroPoster } from "./HeroPoster";
  * <HeroLogo /> (mounted at the page root so it can be position: fixed).
  */
 export function Hero() {
-  const hasVideo = Boolean(heroContent.backgroundVideo);
-
   return (
     <section
       id="hero"
       className="relative isolate flex min-h-screen items-start overflow-hidden"
     >
       <HeroPoster />
-      {hasVideo ? (
-        <>
-          <AmbientVideo
-            src={heroContent.backgroundVideo as string}
-            className="absolute inset-0 -z-[6] h-full w-full object-cover"
-          />
-          <div
-            aria-hidden
-            className="absolute inset-0 -z-[5]"
-            style={{
-              backgroundImage:
-                "radial-gradient(120% 100% at 30% 40%, rgb(var(--atmo-base) / 0.35), rgb(var(--atmo-base) / 0.8) 100%)",
-            }}
-          />
-        </>
-      ) : null}
+      <HeroVideo />
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4]">
         <GoldParticles density={36} />
       </div>

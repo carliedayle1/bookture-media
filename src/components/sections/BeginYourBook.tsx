@@ -6,7 +6,7 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
-import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { ThemedBackground } from "@/components/ui/ThemedBackground";
 import { submitManuscript, type SubmitState } from "@/lib/actions";
 import { ctaContent as c } from "@/lib/content";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,7 @@ export function BeginYourBook() {
 
   return (
     <Section id="begin" chapter={c.chapter} theme="ink-900">
-      <AtmosphereBackground variant="hall" />
+      <ThemedBackground name="begin" scrim="center" />
       <Container size="narrow" className="relative">
         <h2 className="font-display text-parchment-100 text-center text-4xl leading-tight font-light text-balance sm:text-5xl md:text-6xl">
           {c.headline.map((run, i) =>
