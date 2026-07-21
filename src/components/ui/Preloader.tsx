@@ -1,143 +1,129 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
-import { gsap, useGSAP } from "@/lib/gsap";
+import { gsap } from "@/lib/gsap";
 
 const SEEN_KEY = "bookture:intro-seen";
 
 type PreloaderProps = {
   onComplete: () => void;
-  minDurationMs?: number;
+  videoSrc?: string;
 };
 
 /**
- * Cinematic opener: the brand book+arrow monogram draws itself in gold stroke
- * (DrawSVG) while a counter ticks 0 → 100, then an ink curtain lifts to reveal
- * the hero.
+ * First-visit cinematic intro: plays the brand film full-screen (muted, so
+ * autoplay is allowed), then an ink curtain lifts to reveal the hero. A Skip
+ * button ends it at any time. Shown once per session (sessionStorage); repeat
+ * visits skip instantly. Not mounted under reduced motion (see PreloaderGate).
  *
- *  - Skippable via any key/click/scroll.
- *  - Shown once per session (sessionStorage); repeat visits skip instantly.
- *  - Reduced motion is handled by the caller (PreloaderGate), which does not
- *    mount the Preloader at all in that case.
+ * Robustness: completes on the video's `ended`/`error`, on a blocked autoplay,
+ * and on an absolute time cap — so the site can never get stuck behind it.
  */
-export function Preloader({ onComplete, minDurationMs = 1900 }: PreloaderProps) {
+export function Preloader({ onComplete, videoSrc = "/video/intro.mp4" }: PreloaderProps) {
   const root = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLSpanElement>(null);
-  const [skippable, setSkippable] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const barRef = useRef<HTMLSpanElement>(null);
+  const finished = useRef(false);
 
-  useGSAP(
-    () => {
-      // Repeat visits: skip instantly.
-      if (sessionStorage.getItem(SEEN_KEY)) {
-        onComplete();
-        return;
+  const finish = useCallback(() => {
+    if (finished.current) {
+      return;
+    }
+    finished.current = true;
+    try {
+      sessionStorage.setItem(SEEN_KEY, "1");
+    } catch {
+      /* ignore */
+    }
+    const el = root.current;
+    if (el) {
+      gsap.to(el, { yPercent: -100, duration: 0.9, ease: "inOutBook", onComplete });
+    } else {
+      onComplete();
+    }
+  }, [onComplete]);
+
+  useEffect(() => {
+    if (sessionStorage.getItem(SEEN_KEY)) {
+      onComplete();
+      return;
+    }
+
+    const video = videoRef.current;
+    if (!video) {
+      finish();
+      return;
+    }
+
+    const onEnded = () => finish();
+    const onError = () => finish();
+    const onTime = () => {
+      if (barRef.current && video.duration) {
+        barRef.current.style.transform = `scaleX(${video.currentTime / video.duration})`;
       }
+    };
+    video.addEventListener("ended", onEnded);
+    video.addEventListener("error", onError);
+    video.addEventListener("timeupdate", onTime);
 
-      const counter = { n: 0 };
-      const writeCounter = () => {
-        if (counterRef.current) {
-          counterRef.current.textContent = String(Math.round(counter.n)).padStart(2, "0");
-        }
-      };
+    let blockedTimer = 0;
+    video.play().catch(() => {
+      // Autoplay blocked → don't trap the user behind a paused video.
+      blockedTimer = window.setTimeout(finish, 1200);
+    });
+    const cap = window.setTimeout(finish, 15000);
 
-      const finish = () => {
-        sessionStorage.setItem(SEEN_KEY, "1");
-        onComplete();
-      };
-
-      const tl = gsap.timeline({
-        defaults: { ease: "inOutBook" },
-        onComplete: finish,
-      });
-
-      tl.set(".mono-stroke", { visibility: "visible" })
-        .fromTo(
-          ".mono-stroke",
-          { drawSVG: "0%" },
-          { drawSVG: "100%", duration: 1.1, stagger: 0.06, ease: "outExpo" },
-          0,
-        )
-        .to(counter, { n: 100, duration: minDurationMs / 1000, ease: "outExpo", onUpdate: writeCounter }, 0)
-        .to(".preloader-progress", { scaleX: 1, duration: minDurationMs / 1000, ease: "outExpo" }, 0)
-        // brief hold, then curtain lift
-        .to(".preloader-content", { autoAlpha: 0, duration: 0.4 }, "+=0.15")
-        .to(root.current, { yPercent: -100, duration: 0.9, ease: "inOutBook" }, "<0.1");
-
-      // Enable skipping after the first beat.
-      const enable = gsap.delayedCall(0.4, () => setSkippable(true));
-
-      const skip = () => {
-        if (tl.progress() < 1) {
-          tl.timeScale(3.5);
-        }
-      };
-      window.addEventListener("keydown", skip);
-      window.addEventListener("pointerdown", skip);
-      window.addEventListener("wheel", skip, { passive: true });
-
-      return () => {
-        enable.kill();
-        window.removeEventListener("keydown", skip);
-        window.removeEventListener("pointerdown", skip);
-        window.removeEventListener("wheel", skip);
-      };
-    },
-    { scope: root },
-  );
+    return () => {
+      video.removeEventListener("ended", onEnded);
+      video.removeEventListener("error", onError);
+      video.removeEventListener("timeupdate", onTime);
+      if (blockedTimer) clearTimeout(blockedTimer);
+      clearTimeout(cap);
+    };
+  }, [finish, onComplete]);
 
   return (
     <div
       ref={root}
-      className="bg-ink-950 fixed inset-0 z-[100] flex flex-col items-center justify-center"
-      role="progressbar"
-      aria-label="Loading"
+      className="bg-ink-950 fixed inset-0 z-[100] overflow-hidden"
+      aria-label="Intro"
     >
-      <div className="preloader-content flex flex-col items-center">
-        <svg
-          width="150"
-          height="150"
-          viewBox="0 0 120 120"
-          fill="none"
-          className="text-gold-400 overflow-visible"
-        >
-          <g
-            className="mono-stroke"
-            style={{ visibility: "hidden" }}
-            stroke="currentColor"
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            {/* open book */}
-            <path d="M60 84 C 42 72 24 71 10 78" />
-            <path d="M10 78 L 13 66 C 30 62 46 68 60 78" />
-            <path d="M60 84 C 78 72 96 71 110 78" />
-            <path d="M110 78 L 107 66 C 90 62 74 68 60 78" />
-            <path d="M60 78 L 60 84" />
-            {/* rising arrow */}
-            <path d="M60 74 L 60 34" />
-            <path d="M49 46 L 60 34 L 71 46" />
-            {/* dissolving squares */}
-            <path d="M74 30 h6 v6 h-6 Z" />
-            <path d="M84 22 h5 v5 h-5 Z" />
-            <path d="M92 15 h4 v4 h-4 Z" />
-          </g>
-        </svg>
+      <video
+        ref={videoRef}
+        className="absolute inset-0 h-full w-full object-cover"
+        src={videoSrc}
+        muted
+        playsInline
+        autoPlay
+        preload="auto"
+      />
+      {/* legibility scrim for the controls */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{ backgroundImage: "linear-gradient(to top, rgba(8,11,20,0.6), transparent 30%)" }}
+      />
 
-        <div className="mt-10 flex flex-col items-center gap-4">
-          <span className="text-parchment-100 font-mono text-sm tracking-[0.4em] tabular-nums">
-            <span ref={counterRef}>00</span>
-            <span className="text-gold-600"> / 100</span>
-          </span>
-          <span className="h-px w-40 overflow-hidden bg-white/10">
-            <span className="preloader-progress bg-accent block h-full w-full origin-left scale-x-0" />
-          </span>
-          <span className="text-parchment-500 font-mono text-[0.6rem] tracking-[0.3em] uppercase">
-            {skippable ? "Press any key to enter" : "Bookture Media"}
-          </span>
-        </div>
-      </div>
+      <span className="text-parchment-300 absolute bottom-8 left-8 font-mono text-[0.6rem] tracking-[0.35em] uppercase">
+        Bookture Media
+      </span>
+
+      <button
+        type="button"
+        onClick={finish}
+        className="text-parchment-100 hover:text-accent hover:border-gold-500/60 border-foreground/25 absolute bottom-8 right-8 flex items-center gap-2 rounded-full border px-5 py-2.5 font-mono text-[0.65rem] tracking-[0.2em] uppercase backdrop-blur-sm transition-colors"
+      >
+        Skip intro
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+          <path d="M3 3l5 5-5 5M9 3l5 5-5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+
+      {/* video progress */}
+      <span className="absolute inset-x-0 bottom-0 h-px overflow-hidden bg-foreground/15">
+        <span ref={barRef} className="bg-accent block h-full w-full origin-left scale-x-0" />
+      </span>
     </div>
   );
 }
