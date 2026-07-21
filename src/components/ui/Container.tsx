@@ -1,4 +1,4 @@
-import type { ElementType, ReactNode } from "react";
+import { createElement, type ElementType, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 
@@ -18,19 +18,13 @@ type ContainerProps = {
 /** Horizontal max-width wrapper with consistent edge gutters. */
 export function Container({
   size = "default",
-  as: Tag = "div",
+  as = "div",
   className,
   children,
 }: ContainerProps) {
-  return (
-    <Tag
-      className={cn(
-        "mx-auto w-full px-[var(--edge-gutter)]",
-        SIZES[size],
-        className,
-      )}
-    >
-      {children}
-    </Tag>
+  return createElement(
+    as,
+    { className: cn("mx-auto w-full px-[var(--edge-gutter)]", SIZES[size], className) },
+    children,
   );
 }
