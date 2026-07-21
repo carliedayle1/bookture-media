@@ -16,7 +16,7 @@ export function Manifesto() {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Media column (Phase 4: this pins and crossfades scenes) */}
           <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/5 lg:sticky lg:top-28 lg:self-start">
-            <AtmosphereBackground variant="library" vignette />
+            <AtmosphereBackground variant="library" vignette kenBurns />
             <div className="absolute inset-x-0 bottom-0 p-6">
               <p className="text-parchment-500 font-mono text-xs tracking-widest uppercase">
                 {c.scenes[0].caption}

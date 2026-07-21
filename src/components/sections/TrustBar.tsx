@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/Container";
+import { AnimatedCounter } from "@/components/ui/AnimatedCounter";
 import { trustMetrics } from "@/lib/content";
 
 /**
@@ -18,9 +19,8 @@ export function TrustBar() {
               }`}
             >
               <dt className="sr-only">{m.label}</dt>
-              <dd className="font-display text-accent text-5xl leading-none font-light tabular-nums">
-                {m.value.toLocaleString()}
-                {m.suffix ?? ""}
+              <dd className="font-display text-accent text-5xl leading-none font-light">
+                <AnimatedCounter value={m.value} suffix={m.suffix ?? ""} />
               </dd>
               <p className="text-parchment-500 max-w-[16ch] text-xs tracking-wide">{m.label}</p>
             </div>

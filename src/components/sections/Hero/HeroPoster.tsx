@@ -10,7 +10,7 @@ import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
 export function HeroPoster() {
   return (
     <div aria-hidden className="absolute inset-0 -z-10 overflow-hidden">
-      <AtmosphereBackground variant="library" />
+      <AtmosphereBackground variant="library" kenBurns />
       {/* Central pedestal glow — the book's future resting place. */}
       <div
         className="absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-3xl"

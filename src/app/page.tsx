@@ -4,11 +4,13 @@ import { TrustBar } from "@/components/sections/TrustBar";
 import { Manifesto } from "@/components/sections/Manifesto";
 import { Process } from "@/components/sections/Process";
 import { FeaturedWorks } from "@/components/sections/FeaturedWorks";
+import { PressMarquee } from "@/components/sections/PressMarquee";
 import { StudioFilm } from "@/components/sections/StudioFilm";
 import { Voices } from "@/components/sections/Voices";
 import { GlobalReach } from "@/components/sections/GlobalReach";
 import { BeginYourBook } from "@/components/sections/BeginYourBook";
 import { SiteFooter } from "@/components/sections/SiteFooter";
+import { ChapterSpine } from "@/components/ui/ChapterSpine";
 
 /**
  * The single marketing page. All sections are SSR'd (their copy ships in the
@@ -19,12 +21,14 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
+      <ChapterSpine />
       <main>
         <Hero />
         <TrustBar />
         <Manifesto />
         <Process />
         <FeaturedWorks />
+        <PressMarquee />
         <StudioFilm />
         <Voices />
         <GlobalReach />

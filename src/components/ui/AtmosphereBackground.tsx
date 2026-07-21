@@ -30,17 +30,23 @@ type AtmosphereBackgroundProps = {
   variant?: Variant;
   /** Darken the edges for a cinematic frame. */
   vignette?: boolean;
+  /** Slow Ken Burns drift on the scene layer (ambient; off under reduced motion). */
+  kenBurns?: boolean;
   className?: string;
 };
 
 export function AtmosphereBackground({
   variant = "library",
   vignette = true,
+  kenBurns = false,
   className,
 }: AtmosphereBackgroundProps) {
   return (
     <div aria-hidden className={cn("pointer-events-none absolute inset-0 -z-10 overflow-hidden", className)}>
-      <div className="absolute inset-0" style={{ backgroundImage: SCENES[variant] }} />
+      <div
+        className={cn("absolute inset-0", kenBurns && "ambient [animation:var(--animate-ken-burns)]")}
+        style={{ backgroundImage: SCENES[variant] }}
+      />
       {vignette ? (
         <div
           className="absolute inset-0"

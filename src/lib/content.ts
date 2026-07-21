@@ -266,6 +266,26 @@ export const ctaContent: CtaContent = {
   },
 };
 
+/** Short press accolades for the infinite marquee ticker. */
+export const pressQuotes: { quote: string; source: string }[] = [
+  { quote: "A house that still believes in the book as an object", source: "The Paris Review" },
+  { quote: "Small, exacting, and quietly essential", source: "The Times Literary Supplement" },
+  { quote: "They publish as if every title were the last", source: "Granta" },
+  { quote: "The rare press where the paper matters as much as the prose", source: "Lit Hub" },
+  { quote: "Patient publishing, beautifully made", source: "The Bookseller" },
+];
+
+/** Ordered chapter markers for the fixed progress spine (matches page order). */
+export const chapters: { numeral: string; id: string; label: string }[] = [
+  { numeral: "I", id: "belief", label: "The Belief" },
+  { numeral: "II", id: "craft", label: "The Craft" },
+  { numeral: "III", id: "works", label: "Featured Works" },
+  { numeral: "IV", id: "studio", label: "The Studio" },
+  { numeral: "V", id: "voices", label: "Voices" },
+  { numeral: "VI", id: "reach", label: "The Reach" },
+  { numeral: "VII", id: "begin", label: "Begin" },
+];
+
 export const footerContent = {
   columns: [
     {

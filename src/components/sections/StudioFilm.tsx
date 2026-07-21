@@ -15,7 +15,7 @@ export function StudioFilm() {
       id="studio"
       className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden"
     >
-      <AtmosphereBackground variant="press" />
+      <AtmosphereBackground variant="press" kenBurns />
       {/* cinematic letterbox */}
       <span aria-hidden className="bg-ink-950 absolute inset-x-0 top-0 z-10 h-[6vh]" />
       <span aria-hidden className="bg-ink-950 absolute inset-x-0 bottom-0 z-10 h-[6vh]" />
