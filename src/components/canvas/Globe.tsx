@@ -20,43 +20,63 @@ function latLngToVec3(lat: number, lng: number, r = R) {
 }
 
 /**
- * A slowly rotating dotted globe. Destination hubs glow, distribution arcs bow
- * out from the home hub (London), and a packet of light travels each arc. Built
- * from primitives — no textures or models to fetch.
+ * A slowly rotating globe with glowing destination hubs, distribution arcs, and
+ * light packets traveling each arc.
+ *
+ * Photoreal mode: set reachContent.earthTexture (equirectangular day map) and
+ * optionally cloudsTexture — the base becomes a real Earth with a drifting cloud
+ * layer and blue atmosphere (like the reference site). With no textures it falls
+ * back to a stylized glowing ocean planet, so it always looks intentional.
  */
 export function Globe() {
   const group = useRef<THREE.Group>(null);
   const packets = useRef<THREE.Group>(null);
+  const clouds = useRef<THREE.Mesh>(null);
   const baseMat = useRef<THREE.MeshStandardMaterial>(null);
+  const cloudsMat = useRef<THREE.MeshStandardMaterial>(null);
 
-  // Optional: swap in a real equirectangular Earth texture when provided.
   useEffect(() => {
-    const url = reachContent.earthTexture;
-    if (!url) {
-      return;
-    }
     const loader = new THREE.TextureLoader();
-    loader.load(
-      url,
-      (tex) => {
-        tex.colorSpace = THREE.SRGBColorSpace;
-        const mat = baseMat.current;
-        if (mat) {
-          mat.map = tex;
-          mat.color.set("#ffffff");
-          mat.emissive.set("#0a1424");
-          mat.emissiveIntensity = 0.12;
-          mat.needsUpdate = true;
-        }
-      },
-      undefined,
-      () => {
-        /* texture missing — keep the stylized planet */
-      },
-    );
+
+    if (reachContent.earthTexture) {
+      loader.load(
+        reachContent.earthTexture,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          const mat = baseMat.current;
+          if (mat) {
+            mat.map = tex;
+            mat.color.set("#ffffff");
+            mat.emissive.set("#0a1424");
+            mat.emissiveIntensity = 0.15;
+            mat.roughness = 0.85;
+            mat.needsUpdate = true;
+          }
+        },
+        undefined,
+        () => {},
+      );
+    }
+
+    if (reachContent.cloudsTexture) {
+      loader.load(
+        reachContent.cloudsTexture,
+        (tex) => {
+          tex.colorSpace = THREE.SRGBColorSpace;
+          const mat = cloudsMat.current;
+          if (mat) {
+            mat.map = tex;
+            mat.alphaMap = tex;
+            mat.opacity = 0.45;
+            mat.needsUpdate = true;
+          }
+        },
+        undefined,
+        () => {},
+      );
+    }
   }, []);
 
-  // Fibonacci-distributed dots forming the globe surface.
   const dotGeo = useMemo(() => {
     const N = 1500;
     const positions = new Float32Array(N * 3);
@@ -65,9 +85,9 @@ export function Globe() {
       const y = 1 - (i / (N - 1)) * 2;
       const radius = Math.sqrt(1 - y * y);
       const theta = golden * i;
-      positions[i * 3] = Math.cos(theta) * radius * R * 1.003;
-      positions[i * 3 + 1] = y * R * 1.003;
-      positions[i * 3 + 2] = Math.sin(theta) * radius * R * 1.003;
+      positions[i * 3] = Math.cos(theta) * radius * R * 1.004;
+      positions[i * 3 + 1] = y * R * 1.004;
+      positions[i * 3 + 2] = Math.sin(theta) * radius * R * 1.004;
     }
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
@@ -86,7 +106,7 @@ export function Globe() {
       .map((h) => {
         const start = primary.v;
         const end = h.v;
-        const lift = 1 + 0.12 + 0.3 * (start.distanceTo(end) / (2 * R));
+        const lift = 1 + 0.14 + 0.32 * (start.distanceTo(end) / (2 * R));
         const mid = start.clone().add(end).multiplyScalar(0.5).normalize().multiplyScalar(R * lift);
         const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
         return { curve, geo: new THREE.TubeGeometry(curve, 48, 0.008, 8, false) };
@@ -109,7 +129,10 @@ export function Globe() {
 
   useFrame((state, delta) => {
     if (group.current) {
-      group.current.rotation.y += delta * 0.08;
+      group.current.rotation.y += delta * 0.06;
+    }
+    if (clouds.current) {
+      clouds.current.rotation.y += delta * 0.02; // clouds drift a touch faster
     }
     if (packets.current) {
       const t = state.clock.elapsedTime;
@@ -121,32 +144,47 @@ export function Globe() {
   });
 
   return (
-    <group ref={group} rotation={[0.32, 0, 0.08]}>
-      {/* lit ocean planet — occludes back-facing dots/arcs */}
+    <group ref={group} rotation={[0.32, 0, 0.05]}>
+      {/* planet surface (real Earth when textured, else lit ocean) */}
       <mesh>
-        <sphereGeometry args={[R * 0.99, 64, 64]} />
+        <sphereGeometry args={[R, 64, 64]} />
         <meshStandardMaterial
           ref={baseMat}
           color="#123a72"
           emissive="#0a1f42"
-          emissiveIntensity={0.45}
+          emissiveIntensity={0.4}
           roughness={0.65}
           metalness={0.1}
         />
       </mesh>
+
+      {/* cloud layer (only visible once a clouds texture loads) */}
+      <mesh ref={clouds}>
+        <sphereGeometry args={[R * 1.012, 64, 64]} />
+        <meshStandardMaterial
+          ref={cloudsMat}
+          color="#ffffff"
+          transparent
+          opacity={0}
+          depthWrite={false}
+        />
+      </mesh>
+
       {/* atmosphere halo */}
       <mesh>
-        <sphereGeometry args={[R * 1.1, 64, 64]} />
-        <meshBasicMaterial color="#4a86d8" transparent opacity={0.12} side={THREE.BackSide} />
+        <sphereGeometry args={[R * 1.12, 64, 64]} />
+        <meshBasicMaterial color="#4a86d8" transparent opacity={0.14} side={THREE.BackSide} />
       </mesh>
       <mesh>
-        <sphereGeometry args={[R * 1.02, 64, 64]} />
-        <meshBasicMaterial color="#7db0f0" transparent opacity={0.06} side={THREE.BackSide} />
+        <sphereGeometry args={[R * 1.03, 64, 64]} />
+        <meshBasicMaterial color="#8fbcf5" transparent opacity={0.07} side={THREE.BackSide} />
       </mesh>
-      {/* dotted graticule surface */}
+
+      {/* faint graticule dots */}
       <points geometry={dotGeo}>
-        <pointsMaterial color="#dcd0b4" size={0.028} sizeAttenuation transparent opacity={0.9} />
+        <pointsMaterial color="#dcd0b4" size={0.02} sizeAttenuation transparent opacity={0.35} />
       </points>
+
       {/* hub markers */}
       {hubs.map((h) => (
         <group key={h.city} position={h.v.toArray()}>
@@ -158,19 +196,21 @@ export function Globe() {
             <spriteMaterial
               map={glowTexture}
               transparent
-              opacity={0.75}
+              opacity={0.8}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
           </sprite>
         </group>
       ))}
+
       {/* distribution arcs */}
       {arcs.map((a, i) => (
         <mesh key={i} geometry={a.geo}>
           <meshBasicMaterial color="#efdca8" transparent opacity={0.8} />
         </mesh>
       ))}
+
       {/* traveling packets */}
       <group ref={packets}>
         {arcs.map((_, i) => (

@@ -20,7 +20,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative isolate flex min-h-screen items-center overflow-hidden"
+      className="relative isolate flex min-h-screen items-start overflow-hidden"
     >
       <HeroPoster />
       {hasVideo ? (
@@ -43,7 +43,7 @@ export function Hero() {
         <GoldParticles density={36} />
       </div>
 
-      <Container className="relative z-10 py-32">
+      <Container className="relative z-10 w-full pt-[15rem] pb-28">
         <p className="text-parchment-500 mb-8 font-mono text-xs tracking-[0.3em] uppercase">
           {heroContent.eyebrow}
         </p>

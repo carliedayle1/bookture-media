@@ -232,14 +232,17 @@ export type ReachContent = {
   stat: string;
   copy: string;
   hubs: ReachHub[];
-  /** Optional equirectangular Earth texture for a photoreal globe. Empty =
-   *  stylized glowing planet. SWAP POINT: e.g. "/textures/earth.jpg". */
+  /** Optional equirectangular Earth day map for a photoreal globe. Empty =
+   *  stylized glowing planet. SWAP POINT: e.g. "/textures/earth-day.jpg". */
   earthTexture?: string;
+  /** Optional equirectangular clouds map (grayscale/alpha) for a cloud layer. */
+  cloudsTexture?: string;
 };
 
 export const reachContent: ReachContent = {
   chapter: { numeral: "VI", label: "The Reach" },
   earthTexture: "",
+  cloudsTexture: "",
   headline: "Every bookshop that still smells like a bookshop.",
   stat: "47 languages · 92 countries",
   copy: "From a single reading room, our titles travel into translation and onto shelves across the world. We ship to the independents first — the shops that hand-sell, the libraries that keep books in circulation for decades.",
