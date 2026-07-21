@@ -27,13 +27,13 @@ export function GlobalReach() {
           </div>
 
           {/* Animated SVG reach map */}
-          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+          <div className="border-foreground/10 bg-foreground/[0.03] relative overflow-hidden rounded-2xl border p-6">
             <div
               aria-hidden
               className="absolute inset-0 -z-10"
               style={{
                 backgroundImage:
-                  "radial-gradient(80% 60% at 30% 20%, rgba(214,174,92,0.08), transparent 55%)",
+                  "radial-gradient(80% 60% at 30% 20%, rgb(var(--atmo-accent) / 0.08), transparent 55%)",
               }}
             />
             <ReachMap />

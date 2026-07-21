@@ -4,6 +4,7 @@ import "./globals.css";
 
 import { AppProviders } from "@/components/providers/AppProviders";
 import { GrainOverlay } from "@/components/ui/GrainOverlay";
+import { themeInitScript } from "@/components/providers/ThemeProvider";
 
 const fraunces = Fraunces({
   subsets: ["latin"],
@@ -58,9 +59,13 @@ export default function RootLayout({
     <html
       lang="en"
       data-motion="full"
+      data-theme="dark"
+      suppressHydrationWarning
       className={`${fraunces.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="bg-surface text-foreground min-h-full">
+        {/* Apply stored/system theme before first paint to avoid a flash. */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <a
           href="#main"
           className="bg-accent text-ink-950 sr-only z-[130] rounded-full px-5 py-2 font-mono text-xs uppercase focus:not-sr-only focus:fixed focus:left-4 focus:top-4"

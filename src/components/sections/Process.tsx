@@ -80,7 +80,7 @@ export function Process() {
 
         <div className="process-track relative">
           {/* rail: track + drawn line, centered on the rail-cell axis (left-6) */}
-          <span aria-hidden className="absolute left-6 top-0 h-full w-px -translate-x-1/2 bg-white/10" />
+          <span aria-hidden className="bg-foreground/12 absolute left-6 top-0 h-full w-px -translate-x-1/2" />
           <span
             aria-hidden
             className="process-line from-gold-300 via-gold-400 to-gold-600 absolute left-6 top-0 h-full w-px -translate-x-1/2 origin-top scale-y-0 bg-gradient-to-b"
@@ -98,7 +98,7 @@ export function Process() {
                 </div>
                 {/* card */}
                 <TiltCard className="process-card flex-1">
-                  <div className="bg-surface/80 rounded-2xl border border-white/5 p-7 backdrop-blur-sm lg:p-9">
+                  <div className="bg-surface/80 rounded-2xl border border-foreground/10 p-7 backdrop-blur-sm lg:p-9">
                     <div className="flex items-baseline gap-5">
                       <span className="font-display text-gold-600/80 text-4xl leading-none font-light italic">
                         {step.numeral}

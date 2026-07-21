@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 
+import { ThemeProvider } from "./ThemeProvider";
 import { MotionProvider } from "./MotionProvider";
 import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { PreloaderGate } from "./PreloaderGate";
@@ -18,11 +19,13 @@ import { CustomCursor } from "@/components/ui/CustomCursor";
  */
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
-    <MotionProvider>
-      <SmoothScrollProvider>
-        <PreloaderGate>{children}</PreloaderGate>
-        <CustomCursor />
-      </SmoothScrollProvider>
-    </MotionProvider>
+    <ThemeProvider>
+      <MotionProvider>
+        <SmoothScrollProvider>
+          <PreloaderGate>{children}</PreloaderGate>
+          <CustomCursor />
+        </SmoothScrollProvider>
+      </MotionProvider>
+    </ThemeProvider>
   );
 }

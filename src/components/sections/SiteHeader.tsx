@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useLenis } from "@/hooks/useLenis";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/content";
@@ -48,7 +49,7 @@ export function SiteHeader() {
       <div
         className={cn(
           "absolute inset-0 -z-10 border-b transition-colors duration-500",
-          scrolled ? "bg-ink-950/80 border-white/5 backdrop-blur-md" : "border-transparent bg-transparent",
+          scrolled ? "bg-surface/80 border-foreground/10 backdrop-blur-md" : "border-transparent bg-transparent",
         )}
       />
       <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]">
@@ -80,8 +81,9 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center">
-          <Button variant="outline" size="md" href="#begin">
+        <div className="flex items-center gap-3">
+          <ThemeToggle />
+          <Button variant="outline" size="md" href="#begin" className="hidden sm:inline-flex">
             Begin your book
           </Button>
         </div>

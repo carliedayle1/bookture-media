@@ -54,7 +54,7 @@ export function Manifesto() {
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
           {/* Pinned media with crossfading scenes */}
           <div className="lg:sticky lg:top-28 lg:self-start">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-white/5">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-2xl border border-foreground/10">
               {c.scenes.map((scene, i) => (
                 <div key={scene.id} className="manifesto-scene absolute inset-0">
                   <AtmosphereBackground variant={SCENE_VARIANTS[i]} vignette kenBurns />

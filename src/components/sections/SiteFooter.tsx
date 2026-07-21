@@ -6,7 +6,7 @@ import { siteConfig, footerContent } from "@/lib/content";
 
 export function SiteFooter() {
   return (
-    <footer className="bg-surface-alt relative border-t border-white/5">
+    <footer className="bg-surface-alt relative border-t border-foreground/10">
       <Container className="py-[clamp(4rem,8vw,7rem)]">
         <OrnamentDivider variant="fleuron" className="mb-16" />
 
@@ -63,7 +63,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-white/5 pt-8 sm:flex-row sm:items-center">
+        <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
           <p className="font-display text-parchment-500 text-sm italic">{footerContent.colophon}</p>
           <p className="text-parchment-500 font-mono text-xs tracking-wider">
             © {new Date().getFullYear()} {siteConfig.legalName}

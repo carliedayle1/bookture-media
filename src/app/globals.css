@@ -108,9 +108,42 @@
   --muted: var(--color-parchment-500);
   --accent: var(--color-gold-400);
 
+  /* Atmosphere gradient inputs (space-separated RGB, used as rgb(var / a)).
+     Theme-aware so procedural backgrounds flip with the theme. */
+  --atmo-base: 8 11 20; /* deep vignette colour */
+  --atmo-accent: 214 174 92; /* gold glow */
+  --atmo-metal: 150 150 170; /* cool press light */
+
   /* Runtime-only vars (not utilities) */
   --header-height: 5rem;
   --edge-gutter: clamp(1.25rem, 4vw, 3rem);
+
+  color-scheme: dark;
+}
+
+/* ---- Light "parchment" theme: override the primitive tokens so every
+   token-based utility (and the semantic aliases derived from them) flips. ---- */
+:root[data-theme="light"] {
+  --color-ink-950: #efe7d7; /* page ground — warm parchment */
+  --color-ink-900: #e7ddc9; /* alt ground */
+  --color-ink-800: #f8f3e9; /* raised surfaces / cards (lighter, to pop) */
+  --color-ink-700: #d7cab0; /* borders */
+  --color-ink-600: #c1b291;
+
+  --color-gold-300: #c39a3f;
+  --color-gold-400: #9a7324; /* accent — deep gold for contrast on parchment */
+  --color-gold-500: #866024;
+  --color-gold-600: #6a4c18;
+
+  --color-parchment-100: #1b1509; /* primary text — deep warm ink */
+  --color-parchment-300: #433723;
+  --color-parchment-500: #6f6046;
+
+  --atmo-base: 92 74 48; /* warm sepia vignette on parchment */
+  --atmo-accent: 176 132 52;
+  --atmo-metal: 120 108 92;
+
+  color-scheme: light;
 }
 
 @layer base {

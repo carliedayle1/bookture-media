@@ -7,7 +7,7 @@ import { pressQuotes } from "@/lib/content";
  */
 export function PressMarquee() {
   return (
-    <section aria-label="Press" className="bg-surface border-y border-white/5 py-6">
+    <section aria-label="Press" className="bg-surface border-y border-foreground/10 py-6">
       <Marquee durationS={48}>
         {pressQuotes.map((p) => (
           <span key={p.source} className="flex items-center gap-4 px-8">

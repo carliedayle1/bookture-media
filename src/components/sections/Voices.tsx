@@ -62,7 +62,7 @@ export function Voices() {
             return (
               <motion.figure
                 key={t.name}
-                className="bg-surface [grid-area:1/1] flex h-full w-[min(88vw,540px)] cursor-pointer flex-col justify-between rounded-2xl border border-white/10 p-9 lg:p-11"
+                className="bg-surface [grid-area:1/1] flex h-full w-[min(88vw,540px)] cursor-pointer flex-col justify-between rounded-2xl border border-foreground/15 p-9 lg:p-11"
                 style={{ zIndex: 10 - Math.abs(o), pointerEvents: far ? "none" : "auto" }}
                 animate={{
                   x: `${o * 56}%`,
@@ -104,7 +104,7 @@ export function Voices() {
                 onClick={() => setActive(i)}
                 className={cn(
                   "h-1.5 rounded-full transition-all duration-300",
-                  i === active ? "bg-accent w-6" : "bg-white/20 w-1.5 hover:bg-white/40",
+                  i === active ? "bg-accent w-6" : "bg-foreground/25 w-1.5 hover:bg-foreground/45",
                 )}
               />
             ))}
@@ -133,7 +133,7 @@ function CarouselButton({
       onClick={onClick}
       disabled={disabled}
       aria-label={label}
-      className="text-parchment-300 hover:text-accent hover:border-gold-500/50 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 transition-colors disabled:opacity-30"
+      className="text-parchment-300 hover:text-accent hover:border-gold-500/50 flex h-11 w-11 items-center justify-center rounded-full border border-foreground/15 transition-colors disabled:opacity-30"
     >
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={dir === "left" ? "" : "rotate-180"}>
         <path d="M10 2L4 8l6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />

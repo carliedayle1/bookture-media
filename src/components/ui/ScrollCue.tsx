@@ -10,7 +10,7 @@ export function ScrollCue({ className, label = "Scroll" }: { className?: string;
       <span className="text-parchment-500 font-mono text-[0.6rem] tracking-[0.3em] uppercase">
         {label}
       </span>
-      <span className="relative h-14 w-px overflow-hidden bg-white/10">
+      <span className="relative h-14 w-px overflow-hidden bg-foreground/15">
         <span className="ambient bg-accent absolute inset-x-0 top-0 h-1/2 origin-top [animation:var(--animate-pulse-cue)]" />
       </span>
     </div>

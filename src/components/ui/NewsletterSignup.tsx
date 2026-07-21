@@ -49,7 +49,7 @@ export function NewsletterSignup() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="your@email.com"
-          className="border-border text-parchment-100 placeholder:text-parchment-500/60 focus:border-gold-500 w-full rounded-full border bg-white/[0.03] py-3 pl-11 pr-4 font-mono text-sm outline-none transition-colors"
+          className="border-border text-parchment-100 placeholder:text-parchment-500/60 focus:border-gold-500 w-full rounded-full border bg-foreground/[0.05] py-3 pl-11 pr-4 font-mono text-sm outline-none transition-colors"
         />
       </div>
       <Button variant="solid" size="md" type="submit">

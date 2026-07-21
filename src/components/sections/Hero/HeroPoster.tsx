@@ -16,7 +16,7 @@ export function HeroPoster() {
         className="absolute left-1/2 top-1/2 h-[60vmin] w-[60vmin] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 blur-3xl"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 50% 45%, rgba(214,174,92,0.22), rgba(214,174,92,0.05) 45%, transparent 70%)",
+            "radial-gradient(circle at 50% 45%, rgb(var(--atmo-accent) / 0.22), rgb(var(--atmo-accent) / 0.05) 45%, transparent 70%)",
         }}
       />
       {/* Faint horizon line for depth. */}

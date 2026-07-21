@@ -12,7 +12,7 @@ import { ctaContent as c } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
 const inputClass =
-  "border-border text-parchment-100 placeholder:text-parchment-500/50 focus:border-gold-500 w-full rounded-xl border bg-white/[0.03] px-4 py-3.5 text-sm outline-none transition-colors";
+  "border-border text-parchment-100 placeholder:text-parchment-500/50 focus:border-gold-500 w-full rounded-xl border bg-foreground/[0.05] px-4 py-3.5 text-sm outline-none transition-colors";
 
 const initialState: SubmitState = { status: "idle" };
 
