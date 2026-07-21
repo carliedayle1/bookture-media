@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
@@ -10,104 +11,50 @@ import { Modal } from "@/components/ui/Modal";
 import { useReducedMotion } from "@/components/providers/MotionProvider";
 import { featuredWorks, type Work } from "@/lib/content";
 
+const N = featuredWorks.length;
+
+/** Shortest wrapped offset of index `i` from the active center (infinite loop). */
+function offsetOf(i: number, active: number) {
+  let o = ((i - active) % N + N) % N; // 0..N-1
+  if (o > N / 2) o -= N; // wrap the far side negative
+  return o;
+}
+
 /**
- * Featured Works — an auto-advancing, draggable cover carousel. The set is
- * duplicated so the auto-scroll loops seamlessly (wrapped by the exact card
- * period). Auto-scroll pauses on hover or while dragging, and is off under
- * reduced motion. Covers lift + catch a gold sheen on hover and open a detail
- * modal on click; a genuine drag never triggers the modal.
+ * Featured Works — a center-focused coverflow. The middle cover is enlarged and
+ * face-on; neighbours recede, angle away, and dim. It advances slowly and loops
+ * infinitely, and you can drag, use the arrows/dots, or click a side cover to
+ * bring it to center. The centered cover opens a detail modal. Badges sit fully
+ * inside their card (no clipping).
  */
 export function FeaturedWorks() {
-  const [active, setActive] = useState<Work | null>(null);
+  const [active, setActive] = useState(0);
+  const [modalWork, setModalWork] = useState<Work | null>(null);
   const reducedMotion = useReducedMotion();
-  const trackRef = useRef<HTMLDivElement>(null);
-  const drag = useRef({ down: false, startX: 0, startLeft: 0, moved: false });
-  const hovering = useRef(false);
+  const paused = useRef(false);
+  const drag = useRef({ down: false, startX: 0, moved: false });
 
-  const onPointerDown = (e: React.PointerEvent) => {
-    const track = trackRef.current;
-    if (!track) return;
-    drag.current = { down: true, startX: e.clientX, startLeft: track.scrollLeft, moved: false };
-    track.setPointerCapture(e.pointerId);
-  };
-  const onPointerMove = (e: React.PointerEvent) => {
-    const track = trackRef.current;
-    if (!track || !drag.current.down) return;
-    const dx = e.clientX - drag.current.startX;
-    if (Math.abs(dx) > 6) drag.current.moved = true;
-    track.scrollLeft = drag.current.startLeft - dx;
-  };
-  const endDrag = () => {
-    drag.current.down = false;
-  };
+  const go = (dir: number) => setActive((a) => ((a + dir) % N + N) % N);
 
-  // Seamless auto-scroll.
+  // Slow, infinite auto-advance (paused on hover/drag or under reduced motion).
   useEffect(() => {
     if (reducedMotion) {
       return;
     }
-    const track = trackRef.current;
-    if (!track) {
-      return;
-    }
-    let raf = 0;
-    const period = () => {
-      const kids = track.children;
-      return kids.length > featuredWorks.length
-        ? (kids[featuredWorks.length] as HTMLElement).offsetLeft - (kids[0] as HTMLElement).offsetLeft
-        : track.scrollWidth / 2;
-    };
-    const tick = () => {
-      if (!hovering.current && !drag.current.down) {
-        track.scrollLeft += 0.5;
-        const p = period();
-        if (p > 0 && track.scrollLeft >= p) {
-          track.scrollLeft -= p;
-        }
+    const id = setInterval(() => {
+      if (!paused.current && !drag.current.down) {
+        setActive((a) => (a + 1) % N);
       }
-      raf = requestAnimationFrame(tick);
-    };
-    const enter = () => (hovering.current = true);
-    const leave = () => (hovering.current = false);
-    track.addEventListener("pointerenter", enter);
-    track.addEventListener("pointerleave", leave);
-    raf = requestAnimationFrame(tick);
-    return () => {
-      cancelAnimationFrame(raf);
-      track.removeEventListener("pointerenter", enter);
-      track.removeEventListener("pointerleave", leave);
-    };
+    }, 3400);
+    return () => clearInterval(id);
   }, [reducedMotion]);
 
-  const renderCover = (work: Work) => (
-    <>
-      <div className="relative transition-transform duration-500 [transition-timing-function:var(--ease-gold)] group-hover:-translate-y-2 group-hover:[transform:rotateY(-8deg)]">
-        {work.badge ? (
-          <span className="bg-accent text-ink-950 absolute -right-2 -top-2 z-20 rounded-full px-2.5 py-1 font-mono text-[0.55rem] tracking-wider uppercase">
-            {work.badge}
-          </span>
-        ) : null}
-        <BookCover title={work.title} author={work.author} />
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-0 -translate-x-full rounded-[3px] bg-gradient-to-r from-transparent via-white/25 to-transparent transition-transform duration-700 group-hover:translate-x-full"
-        />
-      </div>
-      <div className="mt-4">
-        <p className="text-parchment-100 group-hover:text-accent text-sm font-medium transition-colors">
-          {work.title}
-        </p>
-        <p className="text-parchment-500 text-xs">
-          {work.author} · {work.genre}
-        </p>
-      </div>
-    </>
-  );
+  const activeWork = featuredWorks[active];
 
   return (
     <Section id="works" chapter={{ numeral: "III", label: "Featured Works" }} theme="ink-950">
       <Container size="wide">
-        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
           <RevealText
             as="h2"
             split="lines"
@@ -116,65 +63,161 @@ export function FeaturedWorks() {
             Books we were proud to make.
           </RevealText>
           <p className="text-parchment-500 max-w-xs text-sm leading-relaxed">
-            Drag to browse, or let it drift. Every cover here was set, printed, and
-            bound to our own specification.
+            Every cover here was set, printed, and bound to our own specification.
           </p>
         </div>
       </Container>
 
+      {/* coverflow stage */}
       <div
-        ref={trackRef}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={endDrag}
-        onPointerCancel={endDrag}
-        className="flex cursor-grab gap-8 overflow-x-auto px-[var(--edge-gutter)] pb-6 active:cursor-grabbing [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        className="relative grid h-[440px] w-full place-items-center [perspective:1800px] select-none sm:h-[480px]"
+        onPointerEnter={() => (paused.current = true)}
+        onPointerLeave={() => {
+          paused.current = false;
+          drag.current.down = false;
+        }}
+        onPointerDown={(e) => {
+          drag.current = { down: true, startX: e.clientX, moved: false };
+        }}
+        onPointerUp={(e) => {
+          if (!drag.current.down) return;
+          drag.current.down = false;
+          const dx = e.clientX - drag.current.startX;
+          if (dx < -50) go(1);
+          else if (dx > 50) go(-1);
+        }}
       >
-        {/* interactive set */}
-        {featuredWorks.map((work) => (
-          <div key={work.title} className="w-52 shrink-0 sm:w-60">
-            <button
+        {featuredWorks.map((work, i) => {
+          const o = offsetOf(i, active);
+          const far = Math.abs(o) > 2;
+          const isCenter = o === 0;
+          return (
+            <motion.button
+              key={work.title}
               type="button"
-              onClick={() => {
-                if (!drag.current.moved) setActive(work);
+              className="[grid-area:1/1] w-44 cursor-pointer sm:w-52"
+              style={{ zIndex: 20 - Math.abs(o), pointerEvents: far ? "none" : "auto" }}
+              animate={{
+                x: o * 210,
+                rotateY: o * -16,
+                scale: isCenter ? 1.14 : 0.82,
+                opacity: far ? 0 : isCenter ? 1 : 0.45,
               }}
-              className="group block w-full text-left [perspective:1200px]"
+              transition={{ type: "spring", stiffness: 120, damping: 22 }}
+              onClick={() => {
+                if (drag.current.moved) return;
+                if (isCenter) setModalWork(work);
+                else setActive(i);
+              }}
+              aria-label={isCenter ? `Open ${work.title}` : `Focus ${work.title}`}
+              aria-hidden={far}
             >
-              {renderCover(work)}
-            </button>
-          </div>
-        ))}
-        {/* duplicate set for seamless looping (non-interactive) */}
-        {featuredWorks.map((work) => (
-          <div key={`${work.title}-dup`} aria-hidden className="w-52 shrink-0 sm:w-60">
-            <div className="group block w-full text-left [perspective:1200px]">{renderCover(work)}</div>
-          </div>
-        ))}
+              <div className="relative">
+                {work.badge ? (
+                  <span className="bg-accent text-ink-950 absolute right-3 top-3 z-20 rounded-full px-2.5 py-1 font-mono text-[0.55rem] tracking-wider uppercase shadow-lg shadow-black/40">
+                    {work.badge}
+                  </span>
+                ) : null}
+                <BookCover title={work.title} author={work.author} />
+                {isCenter ? (
+                  <span
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 -translate-x-full rounded-[3px] bg-gradient-to-r from-transparent via-white/25 to-transparent motion-safe:animate-none"
+                  />
+                ) : null}
+              </div>
+            </motion.button>
+          );
+        })}
       </div>
 
-      <Modal open={active !== null} onClose={() => setActive(null)} label={active?.title ?? "Work"}>
-        {active ? (
+      {/* active caption + controls */}
+      <Container className="mt-10">
+        <div className="flex flex-col items-center gap-6">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeWork.title}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35 }}
+              className="text-center"
+            >
+              <p className="text-parchment-100 font-display text-xl">{activeWork.title}</p>
+              <p className="text-parchment-500 mt-1 font-mono text-xs tracking-wide uppercase">
+                {activeWork.author} · {activeWork.genre}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+
+          <div className="flex items-center gap-6">
+            <CarouselButton label="Previous" dir="left" onClick={() => go(-1)} />
+            <div className="flex items-center gap-2">
+              {featuredWorks.map((w, i) => (
+                <button
+                  key={w.title}
+                  type="button"
+                  aria-label={`Go to ${w.title}`}
+                  onClick={() => setActive(i)}
+                  className={
+                    i === active
+                      ? "bg-accent h-1.5 w-6 rounded-full transition-all duration-300"
+                      : "bg-foreground/25 hover:bg-foreground/45 h-1.5 w-1.5 rounded-full transition-all duration-300"
+                  }
+                />
+              ))}
+            </div>
+            <CarouselButton label="Next" dir="right" onClick={() => go(1)} />
+          </div>
+        </div>
+      </Container>
+
+      <Modal open={modalWork !== null} onClose={() => setModalWork(null)} label={modalWork?.title ?? "Work"}>
+        {modalWork ? (
           <div className="grid gap-8 p-8 sm:grid-cols-[160px_1fr] sm:p-10">
             <div className="w-40">
-              <BookCover title={active.title} author={active.author} />
+              <BookCover title={modalWork.title} author={modalWork.author} />
             </div>
             <div>
-              {active.badge ? (
+              {modalWork.badge ? (
                 <span className="text-accent font-mono text-xs tracking-[0.2em] uppercase">
-                  {active.badge}
+                  {modalWork.badge}
                 </span>
               ) : null}
               <h3 className="font-display text-parchment-100 mt-2 text-3xl font-light">
-                {active.title}
+                {modalWork.title}
               </h3>
               <p className="text-parchment-500 mt-1 font-mono text-xs tracking-wide uppercase">
-                {active.author} · {active.genre} · {active.year}
+                {modalWork.author} · {modalWork.genre} · {modalWork.year}
               </p>
-              <p className="text-parchment-300 mt-6 leading-relaxed">{active.blurb}</p>
+              <p className="text-parchment-300 mt-6 leading-relaxed">{modalWork.blurb}</p>
             </div>
           </div>
         ) : null}
       </Modal>
     </Section>
+  );
+}
+
+function CarouselButton({
+  label,
+  dir,
+  onClick,
+}: {
+  label: string;
+  dir: "left" | "right";
+  onClick: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      aria-label={label}
+      className="text-parchment-300 hover:text-accent hover:border-gold-500/50 border-foreground/15 flex h-11 w-11 items-center justify-center rounded-full border transition-colors"
+    >
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className={dir === "left" ? "" : "rotate-180"}>
+        <path d="M10 2L4 8l6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    </button>
   );
 }

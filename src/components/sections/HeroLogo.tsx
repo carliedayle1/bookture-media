@@ -6,6 +6,7 @@ import Image from "next/image";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useAnimation } from "@/hooks/useAnimation";
 import { useLenis } from "@/hooks/useLenis";
+import { useHideOnScroll } from "@/hooks/useHideOnScroll";
 import markSrc from "../../../public/brand/bookture-mark.png";
 
 // Rendered LARGE and scaled DOWN — downscaling a transform stays crisp, upscaling
@@ -17,6 +18,7 @@ const DOCK_SCALE = 0.5;
 export function HeroLogo() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollTo } = useLenis();
+  const { hidden } = useHideOnScroll();
 
   useAnimation(
     ({ root }) => {
@@ -74,30 +76,37 @@ export function HeroLogo() {
   );
 
   return (
+    // Outer element hides/reveals in sync with the navbar (translateY).
     <div
-      ref={ref}
-      className="fixed left-0 top-0 z-50 origin-top-left will-change-transform"
-      style={{ transform: `translate(var(--edge-gutter), 22px) scale(${DOCK_SCALE})` }}
+      className="fixed left-0 top-0 z-50 transition-transform duration-500 [transition-timing-function:var(--ease-in-out-book)]"
+      style={{ transform: hidden ? "translateY(-160%)" : "translateY(0)" }}
     >
-      <button
-        type="button"
-        onClick={() => scrollTo(0)}
-        aria-label="Bookture Media — home"
-        className="pointer-events-auto flex items-center gap-4"
-        data-cursor
+      {/* Inner element carries the scroll-scrubbed dock transform (position + scale). */}
+      <div
+        ref={ref}
+        className="origin-top-left will-change-transform"
+        style={{ transform: `translate(var(--edge-gutter), 22px) scale(${DOCK_SCALE})` }}
       >
-        <Image
-          src={markSrc}
-          alt=""
-          height={MARK_H}
-          width={Math.round((MARK_H * markSrc.width) / markSrc.height)}
-          priority
-          unoptimized
-        />
-        <span className="font-display text-parchment-100 whitespace-nowrap text-[2.7rem] leading-none font-medium tracking-wide">
-          Bookture <span className="text-accent italic">Media</span>
-        </span>
-      </button>
+        <button
+          type="button"
+          onClick={() => scrollTo(0)}
+          aria-label="Bookture Media — home"
+          className="pointer-events-auto flex items-center gap-4"
+          data-cursor
+        >
+          <Image
+            src={markSrc}
+            alt=""
+            height={MARK_H}
+            width={Math.round((MARK_H * markSrc.width) / markSrc.height)}
+            priority
+            unoptimized
+          />
+          <span className="font-display text-parchment-100 whitespace-nowrap text-[2.7rem] leading-none font-medium tracking-wide">
+            Bookture <span className="text-accent italic">Media</span>
+          </span>
+        </button>
+      </div>
     </div>
   );
 }

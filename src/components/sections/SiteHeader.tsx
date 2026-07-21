@@ -1,43 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { useLenis } from "@/hooks/useLenis";
+import { useHideOnScroll } from "@/hooks/useHideOnScroll";
 import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/content";
 
 /**
  * Fixed top navigation. Hides on scroll-down, reappears on scroll-up, and gains
- * a glass background once scrolled past the hero lip.
+ * a glass background once scrolled past the hero lip. The docked HeroLogo uses
+ * the same useHideOnScroll state, so they hide/reveal together.
  */
 export function SiteHeader() {
   const { scrollTo } = useLenis();
-  const [hidden, setHidden] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    let last = window.scrollY;
-    let ticking = false;
-    const update = () => {
-      const y = window.scrollY;
-      setScrolled(y > 40);
-      // only hide well past the top, and only on meaningful downward movement
-      setHidden(y > 160 && y > last + 4);
-      last = y;
-      ticking = false;
-    };
-    const onScroll = () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(update);
-      }
-    };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  const { hidden, scrolled } = useHideOnScroll();
 
   return (
     <header

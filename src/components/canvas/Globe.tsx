@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
+import { Suspense, useEffect, useMemo, useRef } from "react";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 
 import { reachContent } from "@/lib/content";
@@ -19,66 +20,87 @@ function latLngToVec3(lat: number, lng: number, r = R) {
   );
 }
 
+/** Stylized glowing ocean planet — used when no Earth texture is configured
+ *  (or as the Suspense fallback while textures load). */
+function StylizedSurface() {
+  return (
+    <mesh>
+      <sphereGeometry args={[R, 64, 64]} />
+      <meshStandardMaterial
+        color="#123a72"
+        emissive="#0a1f42"
+        emissiveIntensity={0.4}
+        roughness={0.65}
+        metalness={0.1}
+      />
+    </mesh>
+  );
+}
+
+/** Photoreal Earth: day map + optional drifting cloud layer. Loaded
+ *  declaratively via drei useTexture so the map reliably renders on load. */
+function EarthSurface({ dayUrl, cloudsUrl }: { dayUrl: string; cloudsUrl?: string }) {
+  const invalidate = useThree((s) => s.invalidate);
+  const cloudsRef = useRef<THREE.Mesh>(null);
+
+  const urls = cloudsUrl ? [dayUrl, cloudsUrl] : [dayUrl];
+  const textures = useTexture(urls);
+  const day = textures[0];
+  const clouds = cloudsUrl ? textures[1] : null;
+
+  useEffect(() => {
+    if (day) day.colorSpace = THREE.SRGBColorSpace;
+    if (clouds) clouds.colorSpace = THREE.SRGBColorSpace;
+    invalidate(); // force a frame once textures resolve
+  }, [day, clouds, invalidate]);
+
+  useFrame((_, d) => {
+    if (cloudsRef.current) {
+      cloudsRef.current.rotation.y += d * 0.02;
+    }
+  });
+
+  return (
+    <>
+      <mesh>
+        <sphereGeometry args={[R, 64, 64]} />
+        <meshStandardMaterial
+          map={day}
+          emissive="#0a1424"
+          emissiveIntensity={0.12}
+          roughness={0.9}
+          metalness={0.05}
+        />
+      </mesh>
+      {clouds ? (
+        <mesh ref={cloudsRef}>
+          <sphereGeometry args={[R * 1.012, 64, 64]} />
+          <meshStandardMaterial
+            map={clouds}
+            alphaMap={clouds}
+            transparent
+            opacity={0.45}
+            depthWrite={false}
+          />
+        </mesh>
+      ) : null}
+    </>
+  );
+}
+
 /**
  * A slowly rotating globe with glowing destination hubs, distribution arcs, and
- * light packets traveling each arc.
- *
- * Photoreal mode: set reachContent.earthTexture (equirectangular day map) and
- * optionally cloudsTexture — the base becomes a real Earth with a drifting cloud
- * layer and blue atmosphere (like the reference site). With no textures it falls
- * back to a stylized glowing ocean planet, so it always looks intentional.
+ * light packets traveling each arc. Photoreal Earth when textures are set,
+ * stylized planet otherwise.
  */
 export function Globe() {
   const group = useRef<THREE.Group>(null);
   const packets = useRef<THREE.Group>(null);
-  const clouds = useRef<THREE.Mesh>(null);
-  const baseMat = useRef<THREE.MeshStandardMaterial>(null);
-  const cloudsMat = useRef<THREE.MeshStandardMaterial>(null);
 
-  useEffect(() => {
-    const loader = new THREE.TextureLoader();
-
-    if (reachContent.earthTexture) {
-      loader.load(
-        reachContent.earthTexture,
-        (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          const mat = baseMat.current;
-          if (mat) {
-            mat.map = tex;
-            mat.color.set("#ffffff");
-            mat.emissive.set("#0a1424");
-            mat.emissiveIntensity = 0.15;
-            mat.roughness = 0.85;
-            mat.needsUpdate = true;
-          }
-        },
-        undefined,
-        () => {},
-      );
-    }
-
-    if (reachContent.cloudsTexture) {
-      loader.load(
-        reachContent.cloudsTexture,
-        (tex) => {
-          tex.colorSpace = THREE.SRGBColorSpace;
-          const mat = cloudsMat.current;
-          if (mat) {
-            mat.map = tex;
-            mat.alphaMap = tex;
-            mat.opacity = 0.45;
-            mat.needsUpdate = true;
-          }
-        },
-        undefined,
-        () => {},
-      );
-    }
-  }, []);
+  const hasTexture = Boolean(reachContent.earthTexture);
 
   const dotGeo = useMemo(() => {
-    const N = 1500;
+    const N = 1400;
     const positions = new Float32Array(N * 3);
     const golden = Math.PI * (3 - Math.sqrt(5));
     for (let i = 0; i < N; i++) {
@@ -131,9 +153,6 @@ export function Globe() {
     if (group.current) {
       group.current.rotation.y += delta * 0.06;
     }
-    if (clouds.current) {
-      clouds.current.rotation.y += delta * 0.02; // clouds drift a touch faster
-    }
     if (packets.current) {
       const t = state.clock.elapsedTime;
       packets.current.children.forEach((mesh, i) => {
@@ -145,30 +164,16 @@ export function Globe() {
 
   return (
     <group ref={group} rotation={[0.32, 0, 0.05]}>
-      {/* planet surface (real Earth when textured, else lit ocean) */}
-      <mesh>
-        <sphereGeometry args={[R, 64, 64]} />
-        <meshStandardMaterial
-          ref={baseMat}
-          color="#123a72"
-          emissive="#0a1f42"
-          emissiveIntensity={0.4}
-          roughness={0.65}
-          metalness={0.1}
-        />
-      </mesh>
-
-      {/* cloud layer (only visible once a clouds texture loads) */}
-      <mesh ref={clouds}>
-        <sphereGeometry args={[R * 1.012, 64, 64]} />
-        <meshStandardMaterial
-          ref={cloudsMat}
-          color="#ffffff"
-          transparent
-          opacity={0}
-          depthWrite={false}
-        />
-      </mesh>
+      {hasTexture ? (
+        <Suspense fallback={<StylizedSurface />}>
+          <EarthSurface
+            dayUrl={reachContent.earthTexture as string}
+            cloudsUrl={reachContent.cloudsTexture || undefined}
+          />
+        </Suspense>
+      ) : (
+        <StylizedSurface />
+      )}
 
       {/* atmosphere halo */}
       <mesh>
@@ -180,10 +185,12 @@ export function Globe() {
         <meshBasicMaterial color="#8fbcf5" transparent opacity={0.07} side={THREE.BackSide} />
       </mesh>
 
-      {/* faint graticule dots */}
-      <points geometry={dotGeo}>
-        <pointsMaterial color="#dcd0b4" size={0.02} sizeAttenuation transparent opacity={0.35} />
-      </points>
+      {/* graticule dots only in stylized mode (real Earth doesn't need them) */}
+      {!hasTexture ? (
+        <points geometry={dotGeo}>
+          <pointsMaterial color="#dcd0b4" size={0.024} sizeAttenuation transparent opacity={0.7} />
+        </points>
+      ) : null}
 
       {/* hub markers */}
       {hubs.map((h) => (
@@ -196,7 +203,7 @@ export function Globe() {
             <spriteMaterial
               map={glowTexture}
               transparent
-              opacity={0.8}
+              opacity={0.85}
               depthWrite={false}
               blending={THREE.AdditiveBlending}
             />
@@ -207,7 +214,7 @@ export function Globe() {
       {/* distribution arcs */}
       {arcs.map((a, i) => (
         <mesh key={i} geometry={a.geo}>
-          <meshBasicMaterial color="#efdca8" transparent opacity={0.8} />
+          <meshBasicMaterial color="#efdca8" transparent opacity={0.85} />
         </mesh>
       ))}
 
