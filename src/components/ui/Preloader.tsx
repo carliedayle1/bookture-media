@@ -4,18 +4,16 @@ import { useCallback, useEffect, useRef } from "react";
 
 import { gsap } from "@/lib/gsap";
 
-const SEEN_KEY = "bookture:intro-seen";
-
 type PreloaderProps = {
   onComplete: () => void;
   videoSrc?: string;
 };
 
 /**
- * First-visit cinematic intro: plays the brand film full-screen (muted, so
- * autoplay is allowed), then an ink curtain lifts to reveal the hero. A Skip
- * button ends it at any time. Shown once per session (sessionStorage); repeat
- * visits skip instantly. Not mounted under reduced motion (see PreloaderGate).
+ * Cinematic intro: plays the brand film full-screen (muted, so autoplay is
+ * allowed), then an ink curtain lifts to reveal the hero. A Skip button ends it
+ * at any time. Plays on every page load/reload (no session skip — that caused a
+ * one-frame flash). Not mounted under reduced motion (see PreloaderGate).
  *
  * Robustness: completes on the video's `ended`/`error`, on a blocked autoplay,
  * and on an absolute time cap — so the site can never get stuck behind it.
@@ -31,11 +29,6 @@ export function Preloader({ onComplete, videoSrc = "/video/intro.mp4" }: Preload
       return;
     }
     finished.current = true;
-    try {
-      sessionStorage.setItem(SEEN_KEY, "1");
-    } catch {
-      /* ignore */
-    }
     const el = root.current;
     if (el) {
       gsap.to(el, { yPercent: -100, duration: 0.9, ease: "inOutBook", onComplete });
@@ -45,11 +38,6 @@ export function Preloader({ onComplete, videoSrc = "/video/intro.mp4" }: Preload
   }, [onComplete]);
 
   useEffect(() => {
-    if (sessionStorage.getItem(SEEN_KEY)) {
-      onComplete();
-      return;
-    }
-
     const video = videoRef.current;
     if (!video) {
       finish();
