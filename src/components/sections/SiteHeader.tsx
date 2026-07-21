@@ -58,7 +58,7 @@ export function SiteHeader() {
       >
         {/* Invisible spacer reserving the docking spot for the animated HeroLogo. */}
         <span aria-hidden className="pointer-events-none opacity-0">
-          <Logo variant="mark" height={34} withWordmark />
+          <Logo variant="mark" height={46} withWordmark />
         </span>
 
         <nav className="hidden items-center gap-9 md:flex">

@@ -12,7 +12,7 @@ import markSrc from "../../../public/brand/bookture-mark.png";
 // never does (that was the pixelation). Hero shows it near full size; it docks to
 // the navbar at DOCK_SCALE.
 const MARK_H = 92;
-const DOCK_SCALE = 0.36;
+const DOCK_SCALE = 0.5;
 
 export function HeroLogo() {
   const ref = useRef<HTMLDivElement>(null);
