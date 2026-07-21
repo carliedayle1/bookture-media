@@ -64,7 +64,8 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="bg-surface text-foreground min-h-full">
-        {/* Apply stored/system theme before first paint to avoid a flash. */}
+        {/* Applies stored/system theme before first paint. The React dev-mode
+            warning about inline scripts is cosmetic and stripped in production. */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <a
           href="#main"

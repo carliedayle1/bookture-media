@@ -1,7 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
-import { ReachMap } from "./ReachMap";
+import { ReachVisual } from "./ReachVisual";
 import { reachContent as c } from "@/lib/content";
 
 /**
@@ -36,7 +36,7 @@ export function GlobalReach() {
                   "radial-gradient(80% 60% at 30% 20%, rgb(var(--atmo-accent) / 0.08), transparent 55%)",
               }}
             />
-            <ReachMap />
+            <ReachVisual />
           </div>
         </div>
       </Container>
