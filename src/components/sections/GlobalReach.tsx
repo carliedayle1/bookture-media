@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
+import { ReachMap } from "./ReachMap";
 import { reachContent as c } from "@/lib/content";
 
 /**
@@ -25,8 +26,8 @@ export function GlobalReach() {
             <p className="text-parchment-300 mt-6 max-w-md leading-relaxed">{c.copy}</p>
           </div>
 
-          {/* Reach panel (Phase 6: animated SVG map) */}
-          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-8">
+          {/* Animated SVG reach map */}
+          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-white/[0.02] p-6">
             <div
               aria-hidden
               className="absolute inset-0 -z-10"
@@ -35,17 +36,7 @@ export function GlobalReach() {
                   "radial-gradient(80% 60% at 30% 20%, rgba(214,174,92,0.08), transparent 55%)",
               }}
             />
-            <ul className="grid grid-cols-2 gap-x-8 gap-y-5">
-              {c.hubs.map((hub) => (
-                <li key={hub.city} className="flex items-center gap-3">
-                  <span className="ambient bg-accent h-2 w-2 shrink-0 rounded-full [animation:var(--animate-pulse-cue)]" />
-                  <span className="text-parchment-100 text-sm">{hub.city}</span>
-                  <span className="text-parchment-500 ml-auto font-mono text-[0.65rem] uppercase">
-                    {hub.country}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            <ReachMap />
           </div>
         </div>
       </Container>

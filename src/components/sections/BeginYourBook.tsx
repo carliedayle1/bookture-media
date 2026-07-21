@@ -1,25 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useActionState, useRef, useState } from "react";
 
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { Button } from "@/components/ui/Button";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { submitManuscript, type SubmitState } from "@/lib/actions";
 import { ctaContent as c } from "@/lib/content";
+import { cn } from "@/lib/utils";
 
 const inputClass =
   "border-border text-parchment-100 placeholder:text-parchment-500/50 focus:border-gold-500 w-full rounded-xl border bg-white/[0.03] px-4 py-3.5 text-sm outline-none transition-colors";
 
+const initialState: SubmitState = { status: "idle" };
+
 /**
- * Begin Your Book — the conversion moment. Phase 1: a two-step form with an
- * optimistic success state (no network). Phase 6 wires it to a server action
- * with real validation and the extended loading state.
+ * Begin Your Book — a two-step submission form backed by a server action.
+ * Step 1 gathers name + email (client-gated), step 2 the pitch; the whole form
+ * posts to submitManuscript. Success swaps in a gold ornamental confirmation.
  */
 export function BeginYourBook() {
+  const [state, formAction, pending] = useActionState(submitManuscript, initialState);
   const [step, setStep] = useState<0 | 1>(0);
-  const [done, setDone] = useState(false);
+  const nameRef = useRef<HTMLInputElement>(null);
+  const emailRef = useRef<HTMLInputElement>(null);
+
+  const advance = () => {
+    if (nameRef.current?.value.trim() && emailRef.current?.checkValidity()) {
+      setStep(1);
+    } else {
+      nameRef.current?.reportValidity?.();
+      emailRef.current?.reportValidity?.();
+    }
+  };
+
+  const done = state.status === "success";
 
   return (
     <Section id="begin" chapter={c.chapter} theme="ink-900">
@@ -56,50 +73,55 @@ export function BeginYourBook() {
               </p>
             </div>
           ) : (
-            <form
-              className="flex flex-col gap-4"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (step === 0) {
-                  setStep(1);
-                } else {
-                  setDone(true);
-                }
-              }}
-            >
-              {step === 0 ? (
-                <>
-                  <input className={inputClass} placeholder="Your name" required autoComplete="name" />
-                  <input
-                    className={inputClass}
-                    type="email"
-                    placeholder="Your email"
-                    required
-                    autoComplete="email"
-                  />
-                  <div className="mt-2 flex justify-center">
-                    <Button variant="solid" size="lg" magnetic type="submit">
-                      Continue
-                    </Button>
-                  </div>
-                </>
-              ) : (
-                <>
-                  <textarea
-                    className={`${inputClass} min-h-40 resize-none`}
-                    placeholder="Tell us about your book — genre, length, and what it's trying to become."
-                    required
-                  />
-                  <div className="mt-2 flex items-center justify-center gap-4">
-                    <Button variant="ghost" size="md" onClick={() => setStep(0)}>
-                      Back
-                    </Button>
-                    <Button variant="solid" size="lg" magnetic type="submit">
-                      Send to the editor
-                    </Button>
-                  </div>
-                </>
-              )}
+            <form action={formAction} className="flex flex-col gap-4">
+              {/* step 0 — kept mounted (hidden) in step 1 so values still submit */}
+              <div className={cn("flex flex-col gap-4", step === 1 && "hidden")}>
+                <input ref={nameRef} name="name" className={inputClass} placeholder="Your name" required autoComplete="name" />
+                <input
+                  ref={emailRef}
+                  name="email"
+                  type="email"
+                  className={inputClass}
+                  placeholder="Your email"
+                  required
+                  autoComplete="email"
+                />
+                <div className="mt-2 flex justify-center">
+                  <Button variant="solid" size="lg" magnetic onClick={advance}>
+                    Continue
+                  </Button>
+                </div>
+              </div>
+
+              {/* step 1 */}
+              <div className={cn("flex flex-col gap-4", step === 0 && "hidden")}>
+                <textarea
+                  name="pitch"
+                  className={`${inputClass} min-h-40 resize-none`}
+                  placeholder="Tell us about your book — genre, length, and what it's trying to become."
+                  required
+                />
+                {state.status === "error" ? (
+                  <p className="text-center text-sm text-red-300" role="alert">
+                    {state.message}
+                  </p>
+                ) : null}
+                <div className="mt-2 flex items-center justify-center gap-4">
+                  <Button variant="ghost" size="md" onClick={() => setStep(0)}>
+                    Back
+                  </Button>
+                  <Button
+                    variant="solid"
+                    size="lg"
+                    magnetic
+                    type="submit"
+                    loading={pending}
+                    loadingLabel={c.loadingLabel}
+                  >
+                    Send to the editor
+                  </Button>
+                </div>
+              </div>
             </form>
           )}
         </div>

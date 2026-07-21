@@ -39,6 +39,7 @@
   --animate-marquee: marquee 42s linear infinite;
   --animate-pulse-cue: pulse-cue 2.4s var(--ease-gold) infinite;
   --animate-shimmer: shimmer 6s linear infinite;
+  --animate-hub: hub-ping 2.8s var(--ease-gold) infinite;
 
   @keyframes ken-burns {
     from {
@@ -67,6 +68,17 @@
   @keyframes shimmer {
     to {
       background-position: 200% center;
+    }
+  }
+  @keyframes hub-ping {
+    0% {
+      transform: scale(0.5);
+      opacity: 0.7;
+    }
+    70%,
+    100% {
+      transform: scale(2);
+      opacity: 0;
     }
   }
 }

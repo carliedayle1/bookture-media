@@ -4,7 +4,7 @@ import type { RefObject } from "react";
 
 import { gsap, useGSAP } from "@/lib/gsap";
 
-type AnimationScope = RefObject<HTMLElement | null>;
+type AnimationScope = RefObject<Element | null>;
 
 type UseAnimationOptions = {
   /** Ref to the section root — scopes all selector text and auto-cleanup. */
@@ -33,7 +33,7 @@ export function useAnimation(
     /** Scoped gsap timeline/tween factory (selectors resolve within scope). */
     self: typeof gsap;
     /** The resolved scope element (guaranteed non-null inside the callback). */
-    root: HTMLElement;
+    root: Element;
   }) => void | (() => void),
   { scope, dependencies = [] }: UseAnimationOptions,
 ): void {

@@ -1,6 +1,7 @@
 import { Container } from "@/components/ui/Container";
 import { RevealText } from "@/components/ui/RevealText";
 import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
+import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { studioContent as c } from "@/lib/content";
 
 /**
@@ -16,6 +17,20 @@ export function StudioFilm() {
       className="relative isolate flex min-h-[90vh] items-center justify-center overflow-hidden"
     >
       <AtmosphereBackground variant="press" kenBurns />
+      {/* intro film as atmospheric b-roll — swap for real bindery footage later */}
+      <AmbientVideo
+        src={c.videoSrc}
+        className="absolute inset-0 -z-[8] h-full w-full object-cover opacity-40"
+      />
+      {/* darkening scrim for text legibility over the video */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-[7]"
+        style={{
+          backgroundImage:
+            "radial-gradient(120% 90% at 50% 50%, rgba(8,11,20,0.35), rgba(8,11,20,0.85) 100%)",
+        }}
+      />
       {/* cinematic letterbox */}
       <span aria-hidden className="bg-ink-950 absolute inset-x-0 top-0 z-10 h-[6vh]" />
       <span aria-hidden className="bg-ink-950 absolute inset-x-0 bottom-0 z-10 h-[6vh]" />
