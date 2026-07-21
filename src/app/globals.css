@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================================================
+   Bookture Media — Design tokens (Tailwind v4, CSS-first)
+   Palette derived from the brand logo: gold foil (#D6AE5C / #EFDCA8 highlight)
+   on a deep midnight-navy ink scale (harmonized with the logo's #141F38 navy).
+   ========================================================================== */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* ---- Primitive: ink (deep midnight-navy near-blacks) ---- */
+  --color-ink-950: #080b14; /* page ground */
+  --color-ink-900: #0d1220; /* section alt ground */
+  --color-ink-800: #141b2e; /* raised surfaces / cards */
+  --color-ink-700: #232c44; /* borders, hairlines */
+  --color-ink-600: #384365; /* strong borders / disabled */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* ---- Primitive: gold (matched to logo foil) ---- */
+  --color-gold-300: #efdca8; /* highlight shimmer only */
+  --color-gold-400: #d6ae5c; /* primary accent — numerals, dividers, display */
+  --color-gold-500: #c49a4a; /* interactive default */
+  --color-gold-600: #9c7734; /* pressed / borders */
+
+  /* ---- Primitive: parchment (warm off-white text) ---- */
+  --color-parchment-100: #f4eee2; /* primary text on ink */
+  --color-parchment-300: #ded4c0; /* secondary text */
+  --color-parchment-500: #a99e86; /* muted text / captions */
+
+  /* ---- Easing (mirror of src/lib/easing.ts — KEEP IN SYNC) ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1); /* reveals */
+  --ease-in-out-book: cubic-bezier(0.76, 0, 0.24, 1); /* pins, curtains */
+  --ease-gold: cubic-bezier(0.33, 1, 0.68, 1); /* micro-interactions */
+
+  /* ---- Spatial rhythm ---- */
+  --spacing-section: clamp(6rem, 12vw, 11rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 3rem);
+
+  /* ---- Ambient loop keyframes exposed as animation tokens ---- */
+  --animate-ken-burns: ken-burns 26s var(--ease-in-out-book) infinite alternate;
+  --animate-marquee: marquee 42s linear infinite;
+  --animate-pulse-cue: pulse-cue 2.4s var(--ease-gold) infinite;
+  --animate-shimmer: shimmer 6s linear infinite;
+
+  @keyframes ken-burns {
+    from {
+      transform: scale(1.03);
+    }
+    to {
+      transform: scale(1.14) translate3d(-1.5%, -1%, 0);
+    }
+  }
+  @keyframes marquee {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes pulse-cue {
+    0%,
+    100% {
+      transform: scaleY(0.4);
+      opacity: 0.35;
+    }
+    50% {
+      transform: scaleY(1);
+      opacity: 1;
+    }
+  }
+  @keyframes shimmer {
+    to {
+      background-position: 200% center;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@theme inline {
+  /* next/font injects these variables on <html>; inline so utilities read the live value */
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-space-mono);
+
+  /* ---- Semantic aliases (a future light "parchment" theme flips :root only) ---- */
+  --color-surface: var(--surface);
+  --color-surface-alt: var(--surface-alt);
+  --color-surface-raised: var(--surface-raised);
+  --color-border: var(--border);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+}
+
+:root {
+  --surface: var(--color-ink-950);
+  --surface-alt: var(--color-ink-900);
+  --surface-raised: var(--color-ink-800);
+  --border: var(--color-ink-700);
+  --foreground: var(--color-parchment-100);
+  --muted: var(--color-parchment-500);
+  --accent: var(--color-gold-400);
+
+  /* Runtime-only vars (not utilities) */
+  --header-height: 5rem;
+  --edge-gutter: clamp(1.25rem, 4vw, 3rem);
+}
+
+@layer base {
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: auto; /* Lenis owns smooth scroll; never double up */
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-foreground);
+    font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+    font-feature-settings: "kern", "liga";
+  }
+
+  ::selection {
+    background-color: var(--color-gold-500);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-gold-400);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display, ui-serif, Georgia, serif);
+    text-wrap: balance;
+  }
+}
+
+/* ============================================================================
+   Motion gating
+   - The MotionProvider stamps data-motion="reduced|full" on <html>.
+   - Ambient (infinite) loops carry the `.ambient` class so they can be paused
+     both offscreen (via IntersectionObserver) and under reduced motion.
+   - The media-query backstop below covers the no-JS / pre-hydration window.
+   ========================================================================== */
+
+html[data-motion="reduced"] .ambient {
+  animation: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
