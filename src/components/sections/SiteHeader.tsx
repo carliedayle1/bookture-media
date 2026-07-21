@@ -53,17 +53,10 @@ export function SiteHeader() {
         )}
       />
       <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]">
-        <a
-          href="#hero"
-          onClick={(e) => {
-            e.preventDefault();
-            scrollTo(0);
-          }}
-          className="flex items-center"
-          aria-label={`${siteConfig.name} — home`}
-        >
-          <Logo variant="mark" height={34} withWordmark priority />
-        </a>
+        {/* Invisible spacer reserving the docking spot for the animated HeroLogo. */}
+        <span aria-hidden className="pointer-events-none opacity-0">
+          <Logo variant="mark" height={34} withWordmark />
+        </span>
 
         <nav className="hidden items-center gap-9 md:flex">
           {siteConfig.nav.map((link) => (

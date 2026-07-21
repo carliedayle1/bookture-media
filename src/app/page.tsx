@@ -1,4 +1,5 @@
 import { SiteHeader } from "@/components/sections/SiteHeader";
+import { HeroLogo } from "@/components/sections/HeroLogo";
 import { Hero } from "@/components/sections/Hero/Hero";
 import { TrustBar } from "@/components/sections/TrustBar";
 import { Manifesto } from "@/components/sections/Manifesto";
@@ -21,6 +22,7 @@ export default function Home() {
   return (
     <>
       <SiteHeader />
+      <HeroLogo />
       <ChapterSpine />
       <main id="main">
 
