@@ -241,8 +241,8 @@ export type ReachContent = {
 
 export const reachContent: ReachContent = {
   chapter: { numeral: "VI", label: "The Reach" },
-  earthTexture: "",
-  cloudsTexture: "",
+  earthTexture: "/textures/earth-day.jpg",
+  cloudsTexture: "/textures/earth-clouds.png",
   headline: "Every bookshop that still smells like a bookshop.",
   stat: "47 languages · 92 countries",
   copy: "From a single reading room, our titles travel into translation and onto shelves across the world. We ship to the independents first — the shops that hand-sell, the libraries that keep books in circulation for decades.",

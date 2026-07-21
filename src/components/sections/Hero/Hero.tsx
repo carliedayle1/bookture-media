@@ -43,11 +43,7 @@ export function Hero() {
         <GoldParticles density={36} />
       </div>
 
-      <Container className="relative z-10 w-full pt-[15rem] pb-28">
-        <p className="text-parchment-500 mb-8 font-mono text-xs tracking-[0.3em] uppercase">
-          {heroContent.eyebrow}
-        </p>
-
+      <Container className="relative z-10 w-full pt-[14rem] pb-28">
         <h1 className="font-display text-parchment-100 max-w-[16ch] text-[clamp(2.75rem,7.5vw,6.5rem)] leading-[0.98] font-light tracking-tight">
           {heroContent.headline.map((run, i) =>
             run.emphasis ? (
