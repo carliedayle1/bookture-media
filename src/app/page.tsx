@@ -22,7 +22,8 @@ export default function Home() {
     <>
       <SiteHeader />
       <ChapterSpine />
-      <main>
+      <main id="main">
+
         <Hero />
         <TrustBar />
         <Manifesto />

@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { MotionProvider } from "./MotionProvider";
 import { SmoothScrollProvider } from "./SmoothScrollProvider";
 import { PreloaderGate } from "./PreloaderGate";
+import { CustomCursor } from "@/components/ui/CustomCursor";
 
 /**
  * Client composition root, mounted once by the server RootLayout.
@@ -20,6 +21,7 @@ export function AppProviders({ children }: { children: ReactNode }) {
     <MotionProvider>
       <SmoothScrollProvider>
         <PreloaderGate>{children}</PreloaderGate>
+        <CustomCursor />
       </SmoothScrollProvider>
     </MotionProvider>
   );

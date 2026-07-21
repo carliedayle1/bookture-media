@@ -25,13 +25,28 @@ const spaceMono = Space_Mono({
   display: "swap",
 });
 
+const SITE_DESCRIPTION =
+  "A boutique literary publisher. We shape manuscripts into books made to last — cinematic craft, editorial rigour, and a legacy worth keeping.";
+
 export const metadata: Metadata = {
+  // TODO: set to the real production origin before launch.
+  metadataBase: new URL("https://bookture.media"),
   title: {
     default: "Bookture Media — Empowering Stories for Future Generations",
     template: "%s · Bookture Media",
   },
-  description:
-    "A boutique literary publisher. We shape manuscripts into books made to last — cinematic craft, editorial rigour, and a legacy worth keeping.",
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: "Bookture Media — Empowering Stories for Future Generations",
+    description: SITE_DESCRIPTION,
+    siteName: "Bookture Media",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bookture Media",
+    description: SITE_DESCRIPTION,
+  },
 };
 
 export default function RootLayout({
@@ -46,6 +61,12 @@ export default function RootLayout({
       className={`${fraunces.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="bg-surface text-foreground min-h-full">
+        <a
+          href="#main"
+          className="bg-accent text-ink-950 sr-only z-[130] rounded-full px-5 py-2 font-mono text-xs uppercase focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+        >
+          Skip to content
+        </a>
         <AppProviders>{children}</AppProviders>
         <GrainOverlay />
       </body>

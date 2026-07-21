@@ -6,6 +6,7 @@ import dynamic from "next/dynamic";
 import { Container } from "@/components/ui/Container";
 import { Button } from "@/components/ui/Button";
 import { ScrollCue } from "@/components/ui/ScrollCue";
+import { GoldParticles } from "@/components/ui/GoldParticles";
 import { ScrollTrigger } from "@/lib/gsap";
 import { useAnimation } from "@/hooks/useAnimation";
 import { useReducedMotion } from "@/components/providers/MotionProvider";
@@ -65,6 +66,9 @@ export function Hero() {
     >
       <HeroPoster />
       {!reducedMotion ? <HeroCanvas /> : null}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-[4]">
+        <GoldParticles density={36} />
+      </div>
 
       <Container className="relative z-10 py-32">
         <p className="text-parchment-500 mb-8 font-mono text-xs tracking-[0.3em] uppercase">

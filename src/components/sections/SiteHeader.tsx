@@ -1,20 +1,56 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { useLenis } from "@/hooks/useLenis";
+import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/content";
 
 /**
- * Fixed top navigation. Phase 1: static translucent bar with anchor nav.
- * Phase 2 adds hide-on-scroll-down and a glass blur once scrolled.
+ * Fixed top navigation. Hides on scroll-down, reappears on scroll-up, and gains
+ * a glass background once scrolled past the hero lip.
  */
 export function SiteHeader() {
   const { scrollTo } = useLenis();
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let last = window.scrollY;
+    let ticking = false;
+    const update = () => {
+      const y = window.scrollY;
+      setScrolled(y > 40);
+      // only hide well past the top, and only on meaningful downward movement
+      setHidden(y > 160 && y > last + 4);
+      last = y;
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
-      <div className="from-ink-950/80 absolute inset-0 -z-10 bg-gradient-to-b to-transparent backdrop-blur-[2px]" />
+    <header
+      className={cn(
+        "fixed inset-x-0 top-0 z-50 transition-transform duration-500 [transition-timing-function:var(--ease-in-out-book)]",
+        hidden ? "-translate-y-full" : "translate-y-0",
+      )}
+    >
+      <div
+        className={cn(
+          "absolute inset-0 -z-10 border-b transition-colors duration-500",
+          scrolled ? "bg-ink-950/80 border-white/5 backdrop-blur-md" : "border-transparent bg-transparent",
+        )}
+      />
       <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]">
         <a
           href="#hero"
