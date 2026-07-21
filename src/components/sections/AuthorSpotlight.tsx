@@ -18,7 +18,7 @@ export function AuthorSpotlight() {
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* video / placeholder frame */}
-          <div className="border-foreground/10 relative aspect-video overflow-hidden rounded-2xl border">
+          <div className="border-foreground/10 relative isolate aspect-video overflow-hidden rounded-2xl border">
             <ThemedBackground name="spotlight" scrim="center" />
             {hasVideo ? (
               <AmbientVideo src={c.videoSrc} className="absolute inset-0 h-full w-full object-cover" />

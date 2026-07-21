@@ -24,7 +24,21 @@ export function Process() {
   const scope = useRef<HTMLElement>(null);
 
   useAnimation(
-    () => {
+    ({ root }) => {
+      // Parallax the background layer as the section scrolls past.
+      const parallaxLayer = root.querySelector(".themed-parallax");
+      if (parallaxLayer) {
+        gsap.fromTo(
+          parallaxLayer,
+          { yPercent: -6 },
+          {
+            yPercent: 6,
+            ease: "none",
+            scrollTrigger: { trigger: root, start: "top bottom", end: "bottom top", scrub: true },
+          },
+        );
+      }
+
       gsap.fromTo(
         ".process-line",
         { scaleY: 0 },
@@ -68,7 +82,7 @@ export function Process() {
       chapter={{ numeral: "II", label: "The Craft" }}
       theme="ink-900"
     >
-      <ThemedBackground name="craft" scrim="vignette" />
+      <ThemedBackground name="craft" scrim="vignette" parallax />
       <Container size="default">
         <RevealText
           as="h2"

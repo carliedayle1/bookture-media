@@ -119,12 +119,6 @@ export function FeaturedWorks() {
                   </span>
                 ) : null}
                 <BookCover title={work.title} author={work.author} />
-                {isCenter ? (
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 -translate-x-full rounded-[3px] bg-gradient-to-r from-transparent via-white/25 to-transparent motion-safe:animate-none"
-                  />
-                ) : null}
               </div>
             </motion.button>
           );

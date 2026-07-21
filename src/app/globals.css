@@ -148,21 +148,6 @@
   color-scheme: light;
 }
 
-/* Theme-toggled background layers: show the dark asset in dark theme, the light
-   asset in light theme (both are rendered; CSS controls which is visible). */
-.themed-dark {
-  opacity: 1;
-}
-.themed-light {
-  opacity: 0;
-}
-:root[data-theme="light"] .themed-dark {
-  opacity: 0;
-}
-:root[data-theme="light"] .themed-light {
-  opacity: 1;
-}
-
 @layer base {
   html {
     -webkit-font-smoothing: antialiased;
