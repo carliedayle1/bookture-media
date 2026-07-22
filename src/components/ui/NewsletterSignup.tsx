@@ -22,7 +22,7 @@ export function NewsletterSignup() {
 
   return (
     <form
-      className="flex w-full max-w-md items-center gap-3"
+      className="flex w-full max-w-md flex-col items-stretch gap-4"
       onSubmit={(e) => {
         e.preventDefault();
         if (email.trim()) setSubmitted(true);
@@ -31,7 +31,7 @@ export function NewsletterSignup() {
       <label className="sr-only" htmlFor="newsletter-email">
         Email address
       </label>
-      <div className="relative flex-1">
+      <div className="relative w-full">
         <span aria-hidden className="text-accent absolute left-4 top-1/2 -translate-y-1/2">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
             <path
@@ -52,7 +52,7 @@ export function NewsletterSignup() {
           className="border-border text-parchment-100 placeholder:text-parchment-500/60 focus:border-gold-500 w-full rounded-full border bg-foreground/[0.05] py-3 pl-11 pr-4 font-mono text-sm outline-none transition-colors"
         />
       </div>
-      <Button variant="solid" size="md" type="submit">
+      <Button variant="solid" size="md" type="submit" className="w-full">
         Join
       </Button>
     </form>

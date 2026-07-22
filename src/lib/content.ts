@@ -126,55 +126,141 @@ export type Work = {
   author: string;
   genre: string;
   year: number;
+  /** One-line hook, used as the modal's italic lead. */
   blurb: string;
+  /** Fuller jacket copy shown in the detail modal. */
+  synopsis: string;
+  /** Path to the cover artwork under /public. */
+  cover: string;
   badge?: "New" | "Award" | "Reprint";
 };
 
 export const featuredWorks: Work[] = [
   {
-    title: "The Salt Almanac",
-    author: "Marisa Okonkwo",
+    title: "A Grammar of Departures",
+    author: "Noor Haddad",
     genre: "Literary fiction",
     year: 2025,
-    blurb: "A coastal town keeps a ledger of everyone it has lost to the sea — until the ledger starts writing back.",
+    blurb: "A translator who loves only in borrowed languages must choose which tongue to keep her last memories in.",
+    synopsis:
+      "Yara can only fall in love in languages that aren't her own — French with a cellist, Portuguese with a cartographer, never Arabic, never home. When early-onset aphasia begins erasing her words one tongue at a time, she must decide which language to keep her final memories in, and which of her selves to lose. A novel about translation as both intimacy and escape.",
+    cover: "/images/covers/grammar-of-departures.png",
     badge: "New",
   },
   {
-    title: "Cartography of Small Rooms",
-    author: "Aleksander Vidal",
-    genre: "Essays",
+    title: "Tin Sky",
+    author: "Gwennan Price",
+    genre: "Historical fiction",
     year: 2024,
-    blurb: "Fourteen essays on the interiors we carry — the kitchen, the waiting room, the space behind the eyes.",
+    blurb: "A girl who paints skies on the ceilings of a sunless mining town is asked to paint the memories of the dead.",
+    synopsis:
+      "In a 1930s Welsh mining town where men go weeks without daylight, young Carys earns her keep painting skies on the ceilings of their cottages — clouds, larks, weather they'll never see. After a collapse traps a shift underground, the widows ask her for something harder: to paint the last skies the dead might have wanted. A luminous story about grief, labour, and the small mercies of imagination.",
+    cover: "/images/covers/tin-sky.png",
     badge: "Award",
   },
   {
-    title: "What the Orchard Knew",
-    author: "Priya Ramanathan",
-    genre: "Historical fiction",
-    year: 2024,
-    blurb: "Three generations of women, one failing orchard, and a secret pressed flat between the pages of a family Bible.",
+    title: "The Undrowned",
+    author: "Cai Verhoeven",
+    genre: "Speculative fiction",
+    year: 2026,
+    blurb: "In a drowned city, a memory diver salvages keepsakes from flooded homes — until one job is her own.",
+    synopsis:
+      "A generation after the sea took Rotterdam-on-Sea, Wren works as a memory diver, retrieving keepsakes from flooded homes for the people who fled. Every descent into the green dark dredges up someone else's past — until a job at her own childhood address forces her to surface what she abandoned there. A haunting, hopeful vision of loss in a warming world.",
+    cover: "/images/covers/the-undrowned.png",
+    badge: "New",
   },
   {
-    title: "Nightjar",
-    author: "Tomás Beckett",
-    genre: "Poetry",
+    title: "Marginalia",
+    author: "Eleanor Fitch",
+    genre: "Essays",
     year: 2023,
-    blurb: "Poems written at the hour when the birds go quiet and the mind does not.",
+    blurb: "A book conservator reads a lifetime of strangers' margin-notes — and finally her own.",
+    synopsis:
+      "For thirty years, a rare-book conservator has restored the pages of strangers — and quietly collected the notes they left in the margins: grocery lists, confessions, a phone number, a single word of grief. In fourteen essays she reads other people's marginalia as a map of her own reticence, and asks what it means to write in the borders of a life. Warm, wry, and quietly devastating.",
+    cover: "/images/covers/marginalia.png",
+  },
+  {
+    title: "Bruise Season",
+    author: "Junie Calloway",
+    genre: "Literary fiction",
+    year: 2025,
+    blurb: "One luminous, violent summer between two sisters, told in reverse — from the funeral back to the first ripe peach.",
+    synopsis:
+      "Told in reverse — from a funeral back to the first ripe fruit — this is the story of one violent, luminous summer two sisters spend on their grandmother's failing Georgia peach farm. As the narrative unwinds toward innocence, the reader learns what the ending already knows. A debut about heat, sisterhood, and the tenderness hidden inside harm.",
+    cover: "/images/covers/bruise-season.png",
+  },
+  {
+    title: "Vespers for the Unbelieving",
+    author: "Mattias Holt",
+    genre: "Poetry",
+    year: 2022,
+    blurb: "A year of evening prayers by a man who lost his faith but kept the ritual.",
+    synopsis:
+      "A year of evening prayers by a man who has lost his faith but not his need for one. These poems move through insomnia, grief, and the small liturgies of ordinary nights — the last light in a window, the ritual of the kettle, the god-shaped quiet after loss. Spare, luminous, and unafraid of the dark.",
+    cover: "/images/covers/verspers-for-the-unbelieving.png",
     badge: "Reprint",
   },
   {
-    title: "The Inheritance of Weather",
-    author: "Lena Fjord",
-    genre: "Literary fiction",
-    year: 2023,
-    blurb: "A meteorologist inherits her grandmother's diaries and discovers the storms were never really about the storms.",
+    title: "The Glassblower's Confession",
+    author: "Rosa Benedetti",
+    genre: "Historical mystery",
+    year: 2024,
+    blurb: "A forbidden Venetian glassblower forges a mirror that reflects secrets, not faces — and one of them is murder.",
+    synopsis:
+      "On 17th-century Murano, where master glassblowers are forbidden to leave the island on pain of death, Ludovico crafts a mirror that reflects not faces but the secrets of whoever stands before it. When a cardinal's secret surfaces in the glass and the cardinal turns up dead, Ludovico must smuggle both the mirror and himself past the Republic's assassins. A sumptuous, candlelit thriller.",
+    cover: "/images/covers/the-glassblowers-confession.png",
+    badge: "Award",
   },
   {
-    title: "Rows of Kept Things",
-    author: "Daniel Osei",
+    title: "The Weight of Small Birds",
+    author: "João Almeida",
     genre: "Short stories",
-    year: 2022,
-    blurb: "Nine stories about the objects people refuse to throw away, and what those objects refuse to forget.",
+    year: 2023,
+    blurb: "Eleven tenants, one Lisbon building, fifty years — and the single thing each of them couldn't say.",
+    synopsis:
+      "Eleven linked stories set in a single narrow apartment building in Lisbon across fifty years. In each, one tenant and the one thing they could never bring themselves to say — to a lover, a mother, a stranger on the stairs. Together they form a quiet chorus about the words that hold us up and the ones that would have set us free.",
+    cover: "/images/covers/the-weight-of-small-birds.png",
+  },
+  {
+    title: "Aurora Incognita",
+    author: "Mira Sølvberg",
+    genre: "Science fiction",
+    year: 2026,
+    blurb: "The last botanist on a starship tends a garden she'll never see grow — beside an AI dreaming in her grandmother's voice.",
+    synopsis:
+      "Aboard a generation ship four centuries from any shore, Estée is the last living botanist, tending a garden that only her descendants will ever walk. Her sole companion is the ship's failing archival AI — which has begun, inexplicably, to dream in the voice of her grandmother. A meditative novel about inheritance, loneliness, and tending what you'll never see bloom.",
+    cover: "/images/covers/aurora-incognita.png",
+    badge: "New",
+  },
+  {
+    title: "The Photographer of Empty Rooms",
+    author: "Hedda Vance",
+    genre: "Literary thriller",
+    year: 2025,
+    blurb: "The same faint woman haunts the corner of every house a photographer has ever shot. She was never there.",
+    synopsis:
+      "For ten years, real-estate photographer Ruth has shot pristine, empty houses. When she notices the same faint woman standing in the far corner of every photo — a woman she never saw through the lens — her search leads to a disappearance the town paved over decades ago. A slow-burn thriller about what a house keeps and what it gives away.",
+    cover: "/images/covers/the-photographer-of-empty-rooms.png",
+  },
+  {
+    title: "Milk Teeth",
+    author: "Ana-Maria Câmpeanu",
+    genre: "Gothic",
+    year: 2024,
+    blurb: "A folklorist returns for a dying lullaby — and learns the song was a warning to keep something asleep.",
+    synopsis:
+      "A folklorist returns to her grandmother's Carpathian village to record a dying lullaby before its last singer passes. But the villagers only hum it behind closed doors, and always at dusk — because the song was never a lullaby. It was a warning, sung for generations to keep something in the forest asleep. And this year, the singing has grown quiet.",
+    cover: "/images/covers/milk-teeth.png",
+  },
+  {
+    title: "How to Winter",
+    author: "Saana Korhonen",
+    genre: "Nature writing",
+    year: 2023,
+    blurb: "A naturalist who has lost her hearing spends a year alone in the boreal winter, learning to read the silence.",
+    synopsis:
+      "After losing her hearing in her forties, naturalist Saana spends a year alone in a cabin at the edge of the Finnish boreal forest, learning to read a silence she can no longer escape. Part field guide to the northern winter, part reckoning with loss, it asks what listening really means once sound is gone. A spare, radiant book about attention as a form of survival.",
+    cover: "/images/covers/how-to-winter.png",
     badge: "Award",
   },
 ];

@@ -12,10 +12,10 @@ export function SiteFooter() {
       <Container className="py-[clamp(4rem,8vw,7rem)]">
         <OrnamentDivider variant="fleuron" className="mb-16" />
 
-        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.4fr]">
+        <div className="grid gap-12 lg:grid-cols-[2fr_1fr_1fr_1fr_1.4fr]">
           {/* Brand + tagline */}
           <div className="flex flex-col items-start gap-6">
-            <Logo variant="full" height={104} />
+            <Logo variant="full" height={200} className="h-auto w-full max-w-[360px]" />
           </div>
 
           {/* Link columns */}
@@ -68,7 +68,7 @@ export function SiteFooter() {
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
           <p className="font-display text-parchment-500 text-sm italic">{footerContent.colophon}</p>
           <p className="text-parchment-500 font-mono text-xs tracking-wider">
-            © {new Date().getFullYear()} {siteConfig.legalName}
+            © 2025 {siteConfig.name}. All Rights Reserved.
           </p>
         </div>
       </Container>

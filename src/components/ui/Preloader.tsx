@@ -18,7 +18,7 @@ type PreloaderProps = {
  * Robustness: completes on the video's `ended`/`error`, on a blocked autoplay,
  * and on an absolute time cap — so the site can never get stuck behind it.
  */
-export function Preloader({ onComplete, videoSrc = "/video/intro.mp4" }: PreloaderProps) {
+export function Preloader({ onComplete, videoSrc = "/video/intro-video.mp4" }: PreloaderProps) {
   const root = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const barRef = useRef<HTMLSpanElement>(null);

@@ -1,10 +1,11 @@
+import Image from "next/image";
+
 import { cn } from "@/lib/utils";
 
 /**
- * Procedural book jacket — a typographic placeholder standing in for real cover
- * artwork. Deterministic jacket tone per title so the shelf looks intentional.
- *
- * SWAP POINT: replace the inner jacket with a <next/image> of the real cover.
+ * Book jacket. When a `cover` image is supplied, it renders the real artwork
+ * (Next.js-optimised, downscaled to the display size). Otherwise it falls back
+ * to a deterministic typographic placeholder so the shelf still looks intentional.
  */
 
 const JACKETS = [
@@ -27,10 +28,34 @@ function toneFor(seed: string): string {
 type BookCoverProps = {
   title: string;
   author: string;
+  /** Real cover artwork under /public. Falls back to a procedural jacket if absent. */
+  cover?: string;
   className?: string;
 };
 
-export function BookCover({ title, author, className }: BookCoverProps) {
+export function BookCover({ title, author, cover, className }: BookCoverProps) {
+  if (cover) {
+    return (
+      <div
+        className={cn(
+          "relative aspect-[2/3] w-full overflow-hidden rounded-[3px] shadow-2xl shadow-black/50",
+          className,
+        )}
+      >
+        <Image
+          src={cover}
+          alt={`${title} — ${author}`}
+          fill
+          sizes="(min-width: 640px) 240px, 200px"
+          className="object-cover"
+        />
+        {/* spine shading keeps the 3D depth in the coverflow */}
+        <span aria-hidden className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/45 to-transparent" />
+        <span aria-hidden className="absolute inset-y-0 left-3 w-px bg-white/10" />
+      </div>
+    );
+  }
+
   return (
     <div
       className={cn(

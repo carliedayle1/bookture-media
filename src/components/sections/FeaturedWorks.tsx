@@ -118,7 +118,7 @@ export function FeaturedWorks() {
                     {work.badge}
                   </span>
                 ) : null}
-                <BookCover title={work.title} author={work.author} />
+                <BookCover title={work.title} author={work.author} cover={work.cover} />
               </div>
             </motion.button>
           );
@@ -170,7 +170,7 @@ export function FeaturedWorks() {
         {modalWork ? (
           <div className="grid gap-8 p-8 sm:grid-cols-[160px_1fr] sm:p-10">
             <div className="w-40">
-              <BookCover title={modalWork.title} author={modalWork.author} />
+              <BookCover title={modalWork.title} author={modalWork.author} cover={modalWork.cover} />
             </div>
             <div>
               {modalWork.badge ? (
@@ -184,7 +184,10 @@ export function FeaturedWorks() {
               <p className="text-parchment-500 mt-1 font-mono text-xs tracking-wide uppercase">
                 {modalWork.author} · {modalWork.genre} · {modalWork.year}
               </p>
-              <p className="text-parchment-300 mt-6 leading-relaxed">{modalWork.blurb}</p>
+              <p className="text-gold-400/90 font-display mt-6 text-lg leading-snug italic">
+                {modalWork.blurb}
+              </p>
+              <p className="text-parchment-300 mt-4 leading-relaxed">{modalWork.synopsis}</p>
             </div>
           </div>
         ) : null}

@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { siteConfig } from "@/lib/content";
 
 import markSrc from "../../../public/brand/bookture-mark.png";
-import logoSrc from "../../../public/brand/bookture-logo.png";
+import logoSrc from "../../../public/images/new-logo.png";
 
 type LogoProps = {
   /** "mark" = emblem only (header); "full" = full lockup with tagline (footer). */
@@ -28,7 +28,7 @@ export function Logo({
     return (
       <Image
         src={logoSrc}
-        alt={`${siteConfig.legalName} — ${siteConfig.tagline}`}
+        alt={`${siteConfig.name} — ${siteConfig.tagline}`}
         height={height}
         width={Math.round((logoSrc.width / logoSrc.height) * height)}
         priority={priority}
