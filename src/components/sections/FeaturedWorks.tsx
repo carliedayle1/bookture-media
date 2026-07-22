@@ -70,7 +70,7 @@ export function FeaturedWorks() {
 
       {/* coverflow stage */}
       <div
-        className="relative grid h-[440px] w-full place-items-center [perspective:1800px] select-none sm:h-[480px]"
+        className="relative grid h-[520px] w-full place-items-center [perspective:1800px] select-none sm:h-[600px]"
         onPointerEnter={() => (paused.current = true)}
         onPointerLeave={() => {
           paused.current = false;
@@ -95,10 +95,10 @@ export function FeaturedWorks() {
             <motion.button
               key={work.title}
               type="button"
-              className="[grid-area:1/1] w-44 cursor-pointer sm:w-52"
+              className="[grid-area:1/1] w-56 cursor-pointer sm:w-72"
               style={{ zIndex: 20 - Math.abs(o), pointerEvents: far ? "none" : "auto" }}
               animate={{
-                x: o * 210,
+                x: o * 260,
                 rotateY: o * -16,
                 scale: isCenter ? 1.14 : 0.82,
                 opacity: far ? 0 : isCenter ? 1 : 0.45,
@@ -166,10 +166,10 @@ export function FeaturedWorks() {
         </div>
       </Container>
 
-      <Modal open={modalWork !== null} onClose={() => setModalWork(null)} label={modalWork?.title ?? "Work"}>
+      <Modal open={modalWork !== null} onClose={() => setModalWork(null)} label={modalWork?.title ?? "Work"} size="wide">
         {modalWork ? (
-          <div className="grid gap-8 p-8 sm:grid-cols-[160px_1fr] sm:p-10">
-            <div className="w-40">
+          <div className="grid gap-8 p-8 sm:grid-cols-[240px_1fr] sm:p-10">
+            <div className="mx-auto w-52 sm:mx-0 sm:w-full">
               <BookCover title={modalWork.title} author={modalWork.author} cover={modalWork.cover} />
             </div>
             <div>

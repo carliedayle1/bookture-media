@@ -40,6 +40,7 @@
   --animate-pulse-cue: pulse-cue 2.4s var(--ease-gold) infinite;
   --animate-shimmer: shimmer 6s linear infinite;
   --animate-hub: hub-ping 2.8s var(--ease-gold) infinite;
+  --animate-glow-drift: glow-drift 20s var(--ease-in-out-book) infinite alternate;
 
   @keyframes ken-burns {
     from {
@@ -79,6 +80,16 @@
     100% {
       transform: scale(2);
       opacity: 0;
+    }
+  }
+  @keyframes glow-drift {
+    from {
+      transform: translate3d(-3%, 2%, 0) scale(1);
+      opacity: 0.45;
+    }
+    to {
+      transform: translate3d(4%, -3%, 0) scale(1.18);
+      opacity: 0.85;
     }
   }
 }

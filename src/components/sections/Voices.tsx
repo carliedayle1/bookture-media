@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
+import { GoldParticles } from "@/components/ui/GoldParticles";
+import { AmbientGlow } from "@/components/ui/AmbientGlow";
 import { testimonials } from "@/lib/content";
 import { cn } from "@/lib/utils";
 
@@ -23,6 +25,10 @@ export function Voices() {
 
   return (
     <Section id="voices" chapter={{ numeral: "V", label: "Voices" }} theme="ink-900">
+      <AmbientGlow />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <GoldParticles density={26} />
+      </div>
       <Container>
         <RevealText
           as="h2"

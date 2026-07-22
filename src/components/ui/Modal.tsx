@@ -3,10 +3,14 @@
 import { useEffect, useRef, type ReactNode } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
+import { cn } from "@/lib/utils";
+
 type ModalProps = {
   open: boolean;
   onClose: () => void;
   label: string;
+  /** Panel max width. "wide" suits a cover + copy two-column layout. */
+  size?: "default" | "wide";
   children: ReactNode;
 };
 
@@ -15,7 +19,7 @@ type ModalProps = {
  * closes on Escape and backdrop click, and moves focus into the panel on open.
  * (Full focus-trap hardening is a Phase 7 a11y task.)
  */
-export function Modal({ open, onClose, label, children }: ModalProps) {
+export function Modal({ open, onClose, label, size = "default", children }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -58,7 +62,10 @@ export function Modal({ open, onClose, label, children }: ModalProps) {
             aria-modal="true"
             aria-label={label}
             tabIndex={-1}
-            className="bg-surface-raised relative z-10 max-h-[85vh] w-full max-w-2xl overflow-auto rounded-2xl border border-foreground/15 outline-none"
+            className={cn(
+              "bg-surface-raised relative z-10 max-h-[85vh] w-full overflow-auto rounded-2xl border border-foreground/15 outline-none",
+              size === "wide" ? "max-w-3xl" : "max-w-2xl",
+            )}
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 24, scale: 0.98 }}

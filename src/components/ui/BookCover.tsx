@@ -46,7 +46,7 @@ export function BookCover({ title, author, cover, className }: BookCoverProps) {
           src={cover}
           alt={`${title} — ${author}`}
           fill
-          sizes="(min-width: 640px) 240px, 200px"
+          sizes="(min-width: 640px) 320px, 240px"
           className="object-cover"
         />
         {/* spine shading keeps the 3D depth in the coverflow */}

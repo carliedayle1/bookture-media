@@ -3,6 +3,8 @@ import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
 import { ThemedBackground } from "@/components/ui/ThemedBackground";
 import { AmbientVideo } from "@/components/ui/AmbientVideo";
+import { GoldParticles } from "@/components/ui/GoldParticles";
+import { AmbientGlow } from "@/components/ui/AmbientGlow";
 import { authorSpotlightContent as c } from "@/lib/content";
 
 /**
@@ -15,6 +17,10 @@ export function AuthorSpotlight() {
 
   return (
     <Section id="spotlight" chapter={c.chapter} theme="ink-900">
+      <AmbientGlow />
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <GoldParticles density={22} />
+      </div>
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* video / placeholder frame */}
@@ -24,10 +30,21 @@ export function AuthorSpotlight() {
               <AmbientVideo src={c.videoSrc} className="absolute inset-0 h-full w-full object-cover" />
             ) : null}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
-              <span className="border-gold-500/50 bg-ink-950/30 group flex h-20 w-20 items-center justify-center rounded-full border backdrop-blur-sm">
-                <svg width="22" height="22" viewBox="0 0 24 24" className="text-accent ml-1" fill="currentColor">
-                  <path d="M6 4l14 8-14 8z" />
-                </svg>
+              <span className="relative flex h-20 w-20 items-center justify-center">
+                {/* radar-ping rings — a moving invite to play */}
+                <span
+                  aria-hidden
+                  className="ambient border-gold-500/40 absolute inset-0 rounded-full border [animation:var(--animate-hub)]"
+                />
+                <span
+                  aria-hidden
+                  className="ambient border-gold-500/30 absolute inset-0 rounded-full border [animation:var(--animate-hub)] [animation-delay:-1.4s]"
+                />
+                <span className="border-gold-500/50 bg-ink-950/30 relative flex h-20 w-20 items-center justify-center rounded-full border backdrop-blur-sm">
+                  <svg width="22" height="22" viewBox="0 0 24 24" className="text-accent ml-1" fill="currentColor">
+                    <path d="M6 4l14 8-14 8z" />
+                  </svg>
+                </span>
               </span>
               <span className="text-parchment-300 font-mono text-xs tracking-[0.3em] uppercase">
                 Watch the conversation
