@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, type ReactNode } from "react";
+import { usePathname } from "next/navigation";
 
 import { Preloader } from "@/components/ui/Preloader";
 import { useReducedMotion } from "./MotionProvider";
@@ -9,14 +10,16 @@ import { useLenis } from "@/hooks/useLenis";
 /**
  * Renders children immediately (so content/LCP exist underneath) and overlays
  * the Preloader on first paint. Scroll is locked until the preloader completes.
- * Under reduced motion the preloader is skipped entirely.
+ * Only runs on the home page (legal/policy pages skip the intro), and is
+ * skipped entirely under reduced motion.
  */
 export function PreloaderGate({ children }: { children: ReactNode }) {
   const reducedMotion = useReducedMotion();
+  const pathname = usePathname();
   const [done, setDone] = useState(false);
   const { lenis } = useLenis();
 
-  const active = !reducedMotion && !done;
+  const active = !reducedMotion && !done && pathname === "/";
 
   useEffect(() => {
     if (!active) {

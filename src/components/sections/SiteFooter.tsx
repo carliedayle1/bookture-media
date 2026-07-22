@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 import { Container } from "@/components/ui/Container";
 import { Logo } from "@/components/ui/Logo";
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
@@ -10,7 +12,7 @@ export function SiteFooter() {
       <Container className="py-[clamp(4rem,8vw,7rem)]">
         <OrnamentDivider variant="fleuron" className="mb-16" />
 
-        <div className="grid gap-14 lg:grid-cols-[1.2fr_1fr_1fr_1.4fr]">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr_1.4fr]">
           {/* Brand + tagline */}
           <div className="flex flex-col items-start gap-6">
             <Logo variant="full" height={104} />
@@ -25,12 +27,12 @@ export function SiteFooter() {
               <ul className="flex flex-col gap-3">
                 {col.links.map((link) => (
                   <li key={link.label}>
-                    <a
+                    <Link
                       href={link.href}
                       className="text-parchment-300 hover:text-accent text-sm transition-colors duration-300"
                     >
                       {link.label}
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

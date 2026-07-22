@@ -367,17 +367,26 @@ export const footerContent = {
     {
       heading: "Publishing",
       links: [
-        { label: "Submit a manuscript", href: "#begin" },
-        { label: "Our process", href: "#craft" },
-        { label: "Rights & translation", href: "#reach" },
+        { label: "Submit a manuscript", href: "/#begin" },
+        { label: "Our process", href: "/#craft" },
+        { label: "Services", href: "/#services" },
       ] satisfies NavLink[],
     },
     {
       heading: "The House",
       links: [
-        { label: "Featured works", href: "#works" },
-        { label: "The studio", href: "#studio" },
-        { label: "Author voices", href: "#voices" },
+        { label: "Featured works", href: "/#works" },
+        { label: "The studio", href: "/#studio" },
+        { label: "Author voices", href: "/#voices" },
+      ] satisfies NavLink[],
+    },
+    {
+      heading: "Legal",
+      links: [
+        { label: "Terms & conditions", href: "/terms" },
+        { label: "Refund policy", href: "/refund-policy" },
+        { label: "Privacy policy", href: "/privacy" },
+        { label: "FAQ", href: "/faq" },
       ] satisfies NavLink[],
     },
   ],
