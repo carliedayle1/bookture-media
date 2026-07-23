@@ -16,12 +16,27 @@ export function SiteFooter() {
           {/* Brand + tagline */}
           <div className="flex flex-col items-start gap-6">
             <Logo variant="full" height={200} className="h-auto w-full max-w-[360px]" />
-            <a
-              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
-              className="text-parchment-300 hover:text-accent font-mono text-sm tracking-wide transition-colors duration-300"
-            >
-              {siteConfig.phone}
-            </a>
+            <div className="flex flex-col items-start gap-2">
+              <span className="text-parchment-500 font-mono text-xs tracking-[0.2em] uppercase">
+                Call us
+              </span>
+              <a
+                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                className="text-parchment-300 hover:text-accent inline-flex items-center gap-2.5 font-mono text-sm tracking-wide transition-colors duration-300"
+              >
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="currentColor"
+                  aria-hidden
+                  className="text-accent"
+                >
+                  <path d="M5.2 2H3.5C2.7 2 2 2.7 2 3.5c0 5.8 4.7 10.5 10.5 10.5.8 0 1.5-.7 1.5-1.5v-1.7c0-.4-.3-.8-.7-.9l-2.3-.5c-.4-.1-.8.1-1 .4l-.7 1c-1.7-.8-3-2.1-3.8-3.8l1-.7c.3-.2.5-.6.4-1l-.5-2.3c-.1-.4-.5-.7-.9-.7z" />
+                </svg>
+                {siteConfig.phone}
+              </a>
+            </div>
           </div>
 
           {/* Link columns */}
