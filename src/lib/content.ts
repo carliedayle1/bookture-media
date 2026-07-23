@@ -14,6 +14,7 @@ export const siteConfig = {
   name: "Bookture Media",
   legalName: "Bookture Media LLC",
   tagline: "Empowering Stories for Future Generations",
+  phone: "+1 778 656 0875",
   nav: [
     { label: "The Craft", href: "#craft" },
     { label: "Works", href: "#works" },

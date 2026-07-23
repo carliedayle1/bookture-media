@@ -16,6 +16,12 @@ export function SiteFooter() {
           {/* Brand + tagline */}
           <div className="flex flex-col items-start gap-6">
             <Logo variant="full" height={200} className="h-auto w-full max-w-[360px]" />
+            <a
+              href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+              className="text-parchment-300 hover:text-accent font-mono text-sm tracking-wide transition-colors duration-300"
+            >
+              {siteConfig.phone}
+            </a>
           </div>
 
           {/* Link columns */}
@@ -68,7 +74,7 @@ export function SiteFooter() {
         <div className="mt-16 flex flex-col items-start justify-between gap-4 border-t border-foreground/10 pt-8 sm:flex-row sm:items-center">
           <p className="font-display text-parchment-500 text-sm italic">{footerContent.colophon}</p>
           <p className="text-parchment-500 font-mono text-xs tracking-wider">
-            © 2025 {siteConfig.name}. All Rights Reserved.
+            © 2005 {siteConfig.name}. All Rights Reserved.
           </p>
         </div>
       </Container>
