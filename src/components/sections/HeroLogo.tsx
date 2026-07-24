@@ -41,8 +41,9 @@ export function HeroLogo() {
           dockY = (inner.offsetHeight - nH * DOCK_SCALE) / 2;
         }
 
-        // Full size on desktop; shrink to fit narrow screens. Never upscales.
-        const startS = Math.min(1, (vw * 0.9) / nW);
+        // Full size on desktop; shrink to fit narrow screens (with edge margin).
+        // Never upscales.
+        const startS = Math.min(1, (vw * 0.85) / nW);
         start = { x: (vw - nW * startS) / 2, y: 104, s: startS };
         end = { x: dockX, y: dockY, s: DOCK_SCALE };
       };
@@ -78,7 +79,7 @@ export function HeroLogo() {
   return (
     // Outer element hides/reveals in sync with the navbar (translateY).
     <div
-      className="fixed left-0 top-0 z-50 transition-transform duration-500 [transition-timing-function:var(--ease-in-out-book)]"
+      className="pointer-events-none fixed left-0 top-0 z-50 transition-transform duration-500 [transition-timing-function:var(--ease-in-out-book)]"
       style={{ transform: hidden ? "translateY(-160%)" : "translateY(0)" }}
     >
       {/* Inner element carries the scroll-scrubbed dock transform (position + scale). */}
@@ -102,7 +103,7 @@ export function HeroLogo() {
             priority
             unoptimized
           />
-          <span className="font-display text-parchment-100 whitespace-nowrap text-[2.7rem] leading-none font-medium tracking-wide">
+          <span className="font-display text-parchment-100 hidden whitespace-nowrap text-[2.7rem] leading-none font-medium tracking-wide sm:inline">
             Bookture <span className="text-accent italic">Media</span>
           </span>
         </button>

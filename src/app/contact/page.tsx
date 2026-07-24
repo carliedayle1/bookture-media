@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
 import { Container } from "@/components/ui/Container";
-import { Logo } from "@/components/ui/Logo";
-import { Button } from "@/components/ui/Button";
-import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { RevealText } from "@/components/ui/RevealText";
 import { SiteFooter } from "@/components/sections/SiteFooter";
+import { SubPageHeader } from "@/components/sections/SubPageHeader";
 import { ContactForm } from "@/components/sections/ContactForm";
 import { siteConfig, contactContent as c } from "@/lib/content";
 
@@ -22,26 +19,7 @@ const MAP_LINK = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=15/
 export default function ContactPage() {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50">
-        <div className="bg-surface/85 border-foreground/10 absolute inset-0 -z-10 border-b backdrop-blur-md" />
-        <div className="mx-auto flex h-[var(--header-height)] w-full max-w-[88rem] items-center justify-between px-[var(--edge-gutter)]">
-          <Link href="/" aria-label="Bookture Media — home" className="flex items-center">
-            <Logo variant="mark" height={38} withWordmark />
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/"
-              className="text-parchment-300 hover:text-accent hidden font-mono text-xs tracking-[0.15em] uppercase transition-colors sm:block"
-            >
-              ← Home
-            </Link>
-            <ThemeToggle />
-            <Button variant="outline" size="md" href="/#begin" className="hidden sm:inline-flex">
-              Begin your book
-            </Button>
-          </div>
-        </div>
-      </header>
+      <SubPageHeader />
 
       <main id="main" className="pt-[calc(var(--header-height)+3.5rem)] pb-24">
         <Container>
