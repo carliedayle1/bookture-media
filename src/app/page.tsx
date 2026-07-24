@@ -6,6 +6,7 @@ import { Manifesto } from "@/components/sections/Manifesto";
 import { Process } from "@/components/sections/Process";
 import { FeaturedWorks } from "@/components/sections/FeaturedWorks";
 import { PressMarquee } from "@/components/sections/PressMarquee";
+import { Awards } from "@/components/sections/Awards";
 import { StudioFilm } from "@/components/sections/StudioFilm";
 import { Voices } from "@/components/sections/Voices";
 import { AuthorSpotlight } from "@/components/sections/AuthorSpotlight";
@@ -34,6 +35,7 @@ export default function Home() {
         <Process />
         <FeaturedWorks />
         <PressMarquee />
+        <Awards />
         <StudioFilm />
         <Voices />
         <AuthorSpotlight />

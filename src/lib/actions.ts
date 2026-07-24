@@ -35,3 +35,30 @@ export async function submitManuscript(
 
   return { status: "success" };
 }
+
+/**
+ * General contact-form handler for the Contact page.
+ *
+ * Validates on the server and acknowledges. As with manuscript submissions, we
+ * intentionally do not email or persist personal data here.
+ */
+export async function submitContactMessage(
+  _prev: SubmitState,
+  formData: FormData,
+): Promise<SubmitState> {
+  const name = String(formData.get("name") ?? "").trim();
+  const email = String(formData.get("email") ?? "").trim();
+  const message = String(formData.get("message") ?? "").trim();
+
+  if (!name || !email || !message) {
+    return { status: "error", message: "Please add your name, email, and a message." };
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return { status: "error", message: "That email doesn't look right — mind checking it?" };
+  }
+  if (message.length < 10) {
+    return { status: "error", message: "Tell us a little more — a sentence or two at least." };
+  }
+
+  return { status: "success" };
+}

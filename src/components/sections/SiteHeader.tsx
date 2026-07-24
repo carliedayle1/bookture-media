@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 import { Logo } from "@/components/ui/Logo";
 import { Button } from "@/components/ui/Button";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -55,7 +57,13 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
+          <Link
+            href="/contact"
+            className="text-parchment-300 hover:text-accent hidden font-mono text-xs tracking-[0.15em] uppercase transition-colors duration-300 sm:block"
+          >
+            Contact
+          </Link>
           <ThemeToggle />
           <Button variant="outline" size="md" href="#begin" className="hidden sm:inline-flex">
             Begin your book

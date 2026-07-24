@@ -15,9 +15,19 @@ export const siteConfig = {
   legalName: "Bookture Media LLC",
   tagline: "Empowering Stories for Future Generations",
   phone: "+1 778 656 0875",
+  email: "support@bookturemedia.org",
+  address: {
+    line1: "Studio 5 — 108 West Cordova Street",
+    line2: "Vancouver, BC V6B 1E4",
+    country: "Canada",
+    // Gastown / downtown Vancouver — centres the contact-page map.
+    lat: 49.2827,
+    lng: -123.1207,
+  },
   nav: [
     { label: "The Craft", href: "#craft" },
     { label: "Works", href: "#works" },
+    { label: "Awards", href: "#awards" },
     { label: "Voices", href: "#voices" },
     { label: "Services", href: "#services" },
   ] satisfies NavLink[],
@@ -364,6 +374,86 @@ export const ctaContent: CtaContent = {
   },
 };
 
+export type Award = {
+  year: string;
+  name: string;
+  issuer: string;
+  detail: string;
+  /** Fuller citation shown in the award modal. */
+  description: string;
+};
+
+export const awardsContent = {
+  eyebrow: "Recognition",
+  headline: "A publishing house the industry noticed.",
+  intro:
+    "We publish few books, and we publish them properly. Now and then the wider world agrees — a shelf of honours earned for how we edit, design, and champion independent publishing.",
+  items: [
+    {
+      year: "2026",
+      name: "Independent Publisher of the Year",
+      issuer: "British Book Awards",
+      detail: "For a catalogue built one title at a time.",
+      description:
+        "The Nibbies' headline publishing honour. Awarded for a year in which our catalogue, editorial standards, and design were judged the strongest of any independent house.",
+    },
+    {
+      year: "2025",
+      name: "Small Press of the Year",
+      issuer: "The Bookseller",
+      detail: "National winner among independent presses.",
+      description:
+        "The industry's recognition of the best independent presses. We were named national winner for publishing with care and conviction at a scale that lets every title matter.",
+    },
+    {
+      year: "2024",
+      name: "Trade Publisher of the Year",
+      issuer: "Independent Publishers Guild",
+      detail: "Cited for editorial rigour and design.",
+      description:
+        "The IPG's award for excellence across the whole of publishing — editorial, design, sales, and rights. The judges cited our rigour on the page and the craft of the finished object.",
+    },
+    {
+      year: "2023",
+      name: "Independent Voice Award",
+      issuer: "London Book Fair",
+      detail: "For championing debut literary voices worldwide.",
+      description:
+        "Part of the International Excellence Awards, this honour recognises publishers who take real risks on new writers. It marked our commitment to debut literary voices from around the world.",
+    },
+    {
+      year: "2021",
+      name: "Publisher to Watch",
+      issuer: "Publishers Weekly Star Watch",
+      detail: "Named among publishing's rising presses.",
+      description:
+        "Star Watch spotlights the people and presses shaping publishing's future. Being named a press to watch affirmed the path we'd chosen: fewer books, published properly.",
+    },
+    {
+      year: "2020",
+      name: "Best New Independent Press",
+      issuer: "Foreword INDIES",
+      detail: "Recognising a first list of rare care.",
+      description:
+        "Foreword's recognition of the year's most promising new independent publisher. It arrived with our very first list — a debut season we'd laboured over, and one readers noticed too.",
+    },
+  ] satisfies Award[],
+} as const;
+
+export const contactContent = {
+  eyebrow: "Contact",
+  headline: "Come find us in Vancouver.",
+  intro:
+    "Whether you're an author with a manuscript, a bookseller, or a reader with a question — we'd love to hear from you. Send a note and a real person will write back.",
+  hoursLabel: "Studio hours",
+  hours: "Monday–Friday · 9am–5pm PT",
+  formNote: "We reply within a few working days — from a name, not a noreply.",
+  success: {
+    title: "Your message is on its way.",
+    body: "Thank you for writing. We read everything ourselves and reply within a few working days.",
+  },
+} as const;
+
 /** Short press accolades for the infinite marquee ticker. */
 export const pressQuotes: { quote: string; source: string }[] = [
   { quote: "A house that still believes in the book as an object", source: "The Paris Review" },
@@ -408,7 +498,15 @@ export const authorSpotlightContent: AuthorSpotlightContent = {
   videoSrc: "",
 };
 
-export type Service = { title: string; body: string };
+export type ServiceStep = { step: string; detail: string };
+export type Service = {
+  title: string;
+  body: string;
+  /** Fuller framing shown at the top of the service modal. */
+  description: string;
+  /** How the work unfolds — rendered as a numbered process in the modal. */
+  process: ServiceStep[];
+};
 
 export type ServicesContent = {
   chapter: { numeral: string; label: string };
@@ -425,26 +523,74 @@ export const servicesContent: ServicesContent = {
     {
       title: "Media Campaigns",
       body: "Press outreach, review placement, and social strategy built around each title — pitched to the outlets that actually cover your genre.",
+      description:
+        "A book earns its readers one considered introduction at a time. We build a campaign around what makes your title singular, then place it in front of the critics, booksellers, and readers most likely to carry it forward.",
+      process: [
+        { step: "Positioning", detail: "We read the book and define its angle — the story behind the story that press will want to tell." },
+        { step: "Outreach", detail: "We pitch the outlets, critics, and podcasts that genuinely cover your genre — never a blast list." },
+        { step: "Placement", detail: "Reviews, features, and interviews, timed to build toward launch week." },
+        { step: "Amplify", detail: "We carry the best coverage across social and the author's channels so it keeps working." },
+      ],
     },
     {
       title: "Award Submissions",
       body: "We track the prizes worth entering, prepare the submissions, and meet every deadline so your book is in the running.",
+      description:
+        "Prizes open doors — but only if the right ones are entered on time and presented properly. We handle the calendar, the paperwork, and the case for your book.",
+      process: [
+        { step: "Shortlist the prizes", detail: "We match your title to the awards it can genuinely win — by genre, form, and eligibility." },
+        { step: "Prepare the case", detail: "Submission copies, citations, and supporting materials, assembled to each jury's brief." },
+        { step: "Meet every deadline", detail: "We track windows across the year so nothing worth entering is missed." },
+        { step: "Follow through", detail: "Longlist and shortlist news becomes its own press moment." },
+      ],
     },
     {
       title: "Book Launch Events",
       body: "From an intimate reading room evening to a festival stage — we plan, host, and produce launches that feel like occasions.",
+      description:
+        "A launch should feel like an occasion, not an obligation. We design and produce events that honour the book and give readers a reason to gather.",
+      process: [
+        { step: "Concept", detail: "We shape the evening around the book — venue, format, and tone." },
+        { step: "Production", detail: "Booking, staging, readings, and run-of-show, handled end to end." },
+        { step: "Guests", detail: "Invitations to the booksellers, press, and readers who matter to the title." },
+        { step: "Afterlife", detail: "Photography and recordings that keep the night working long after." },
+      ],
     },
     {
       title: "Author Website Development",
       body: "A considered home for your work: fast, beautiful, and yours — with a bookshop, a mailing list, and room to grow.",
+      description:
+        "A considered home for your work — fast, beautiful, and entirely yours. Built to sell books, grow a readership, and last.",
+      process: [
+        { step: "Design", detail: "A site shaped to your voice and your catalogue, not a template." },
+        { step: "Build", detail: "Fast, accessible, and easy to update — with a bookshop and mailing list built in." },
+        { step: "Launch", detail: "Domains, analytics, and search set up so readers can find you." },
+        { step: "Grow", detail: "Room to add titles, events, and journal entries as your body of work expands." },
+      ],
     },
     {
       title: "Rights & Translation",
       body: "We represent your book to foreign publishers and negotiate translation deals, extending its reach into new languages.",
+      description:
+        "Your book can live in more than one language. We represent it to publishers abroad and negotiate the deals that carry it into new markets.",
+      process: [
+        { step: "Catalogue", detail: "We prepare rights materials — sample translations, synopses, and a sales sheet." },
+        { step: "Represent", detail: "We pitch your title at the international fairs and to editors we know." },
+        { step: "Negotiate", detail: "Advance, territory, and terms, handled with your interests first." },
+        { step: "Steward", detail: "We track each edition through to publication and royalties." },
+      ],
     },
     {
       title: "Audiobook Production",
       body: "Casting, direction, and studio production for an audiobook edition that honours the voice on the page.",
+      description:
+        "The right voice can make a book new again. We cast, direct, and produce an audiobook edition that honours the voice on the page.",
+      process: [
+        { step: "Casting", detail: "We audition narrators until we find the voice the book was waiting for." },
+        { step: "Direction", detail: "Studio sessions guided so pace, tone, and character stay true." },
+        { step: "Production", detail: "Editing, mastering, and quality control to broadcast standard." },
+        { step: "Distribution", detail: "Delivered to Audible, Libro.fm, and libraries worldwide." },
+      ],
     },
   ],
 };
@@ -457,12 +603,14 @@ export const footerContent = {
         { label: "Submit a manuscript", href: "/#begin" },
         { label: "Our process", href: "/#craft" },
         { label: "Services", href: "/#services" },
+        { label: "Contact", href: "/contact" },
       ] satisfies NavLink[],
     },
     {
       heading: "The House",
       links: [
         { label: "Featured works", href: "/#works" },
+        { label: "Awards", href: "/#awards" },
         { label: "The studio", href: "/#studio" },
         { label: "Author voices", href: "/#voices" },
       ] satisfies NavLink[],
