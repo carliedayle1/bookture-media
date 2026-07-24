@@ -15,9 +15,19 @@ export const siteConfig = {
   legalName: "Bookture Media LLC",
   tagline: "Empowering Stories for Future Generations",
   phone: "+1 778 656 0875",
+  email: "hello@bookturemedia.com",
+  address: {
+    line1: "Studio 5 — 108 West Cordova Street",
+    line2: "Vancouver, BC V6B 1E4",
+    country: "Canada",
+    // Gastown / downtown Vancouver — centres the contact-page map.
+    lat: 49.2827,
+    lng: -123.1207,
+  },
   nav: [
     { label: "The Craft", href: "#craft" },
     { label: "Works", href: "#works" },
+    { label: "Awards", href: "#awards" },
     { label: "Voices", href: "#voices" },
     { label: "Services", href: "#services" },
   ] satisfies NavLink[],
@@ -364,6 +374,67 @@ export const ctaContent: CtaContent = {
   },
 };
 
+export type Award = { year: string; name: string; issuer: string; detail: string };
+
+export const awardsContent = {
+  eyebrow: "Recognition",
+  headline: "Work the industry noticed.",
+  intro:
+    "We publish few books, and we publish them properly. Now and then the wider world agrees — a shelf of honours our authors earned and we were proud to print.",
+  items: [
+    {
+      year: "2025",
+      name: "Independent Publisher of the Year",
+      issuer: "British Book Awards",
+      detail: "For a catalogue built one title at a time.",
+    },
+    {
+      year: "2025",
+      name: "Best Book Design",
+      issuer: "D&AD",
+      detail: "Tin Sky — set, printed, and bound in-house.",
+    },
+    {
+      year: "2024",
+      name: "Small Press of the Year",
+      issuer: "The Bookseller",
+      detail: "Regional winner, North America.",
+    },
+    {
+      year: "2024",
+      name: "Translation Prize · Shortlist",
+      issuer: "PEN America",
+      detail: "The Weight of Small Birds, from the Portuguese.",
+    },
+    {
+      year: "2023",
+      name: "Poetry Book of the Year",
+      issuer: "Forward Prizes",
+      detail: "Vespers for the Unbelieving.",
+    },
+    {
+      year: "2023",
+      name: "Audiobook of the Year",
+      issuer: "The Ambies",
+      detail: "A Grammar of Departures, full-cast edition.",
+    },
+  ] satisfies Award[],
+} as const;
+
+export const contactContent = {
+  eyebrow: "Contact",
+  headline: "Come find us in Vancouver.",
+  intro:
+    "Whether you're an author with a manuscript, a bookseller, or a reader with a question — we'd love to hear from you. Send a note and a real person will write back.",
+  hoursLabel: "Studio hours",
+  hours: "Monday–Friday · 9am–5pm PT",
+  formNote: "We reply within a few working days — from a name, not a noreply.",
+  success: {
+    title: "Your message is on its way.",
+    body: "Thank you for writing. We read everything ourselves and reply within a few working days.",
+  },
+} as const;
+
 /** Short press accolades for the infinite marquee ticker. */
 export const pressQuotes: { quote: string; source: string }[] = [
   { quote: "A house that still believes in the book as an object", source: "The Paris Review" },
@@ -457,12 +528,14 @@ export const footerContent = {
         { label: "Submit a manuscript", href: "/#begin" },
         { label: "Our process", href: "/#craft" },
         { label: "Services", href: "/#services" },
+        { label: "Contact", href: "/contact" },
       ] satisfies NavLink[],
     },
     {
       heading: "The House",
       links: [
         { label: "Featured works", href: "/#works" },
+        { label: "Awards", href: "/#awards" },
         { label: "The studio", href: "/#studio" },
         { label: "Author voices", href: "/#voices" },
       ] satisfies NavLink[],
