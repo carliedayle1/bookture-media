@@ -15,7 +15,7 @@ export const siteConfig = {
   legalName: "Bookture Media LLC",
   tagline: "Empowering Stories for Future Generations",
   phone: "+1 778 656 0875",
-  email: "hello@bookturemedia.com",
+  email: "support@bookturemedia.org",
   address: {
     line1: "Studio 5 — 108 West Cordova Street",
     line2: "Vancouver, BC V6B 1E4",
