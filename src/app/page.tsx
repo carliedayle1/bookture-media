@@ -11,6 +11,7 @@ import { StudioFilm } from "@/components/sections/StudioFilm";
 import { Voices } from "@/components/sections/Voices";
 import { AuthorSpotlight } from "@/components/sections/AuthorSpotlight";
 import { Services } from "@/components/sections/Services";
+import { BookFairs } from "@/components/sections/BookFairs";
 import { GlobalReach } from "@/components/sections/GlobalReach";
 import { BeginYourBook } from "@/components/sections/BeginYourBook";
 import { SiteFooter } from "@/components/sections/SiteFooter";
@@ -40,6 +41,7 @@ export default function Home() {
         <Voices />
         <AuthorSpotlight />
         <Services />
+        <BookFairs />
         <GlobalReach />
         <BeginYourBook />
       </main>

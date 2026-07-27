@@ -5,7 +5,7 @@ import { RevealText } from "@/components/ui/RevealText";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SubPageHeader } from "@/components/sections/SubPageHeader";
 import { ContactForm } from "@/components/sections/ContactForm";
-import { siteConfig, contactContent as c } from "@/lib/content";
+import { siteConfig, contactContent as c, bookFairs } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -84,6 +84,31 @@ export default function ContactPage() {
                 </a>
               </div>
             </div>
+          </div>
+
+          {/* Book fairs the house attends */}
+          <div className="mt-20 border-t border-foreground/10 pt-16">
+            <p className="text-parchment-500 mb-4 font-mono text-xs tracking-[0.3em] uppercase">
+              {c.fairs.eyebrow}
+            </p>
+            <h2 className="font-display text-parchment-100 text-3xl leading-tight font-light sm:text-4xl">
+              {c.fairs.headline}
+            </h2>
+            <p className="text-parchment-300 mt-4 max-w-xl leading-relaxed">{c.fairs.intro}</p>
+
+            <ul className="bg-foreground/10 border-foreground/10 mt-8 grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-3">
+              {bookFairs.map((fair) => (
+                <li key={fair.name} className="bg-surface p-7 lg:p-8">
+                  <p className="text-accent font-mono text-xs tracking-[0.15em] uppercase">
+                    {fair.dates}
+                  </p>
+                  <h3 className="font-display text-parchment-100 mt-4 text-xl font-light">
+                    {fair.name}
+                  </h3>
+                  <p className="text-parchment-300 mt-2 text-sm leading-relaxed">{fair.location}</p>
+                </li>
+              ))}
+            </ul>
           </div>
         </Container>
       </main>

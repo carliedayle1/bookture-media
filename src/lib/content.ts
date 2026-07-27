@@ -452,7 +452,26 @@ export const contactContent = {
     title: "Your message is on its way.",
     body: "Thank you for writing. We read everything ourselves and reply within a few working days.",
   },
+  fairs: {
+    eyebrow: "On the road",
+    headline: "Meet us at these fairs.",
+    intro:
+      "Come say hello. We take meetings and show new titles at the international book fairs throughout the year.",
+  },
 } as const;
+
+export type BookFair = { name: string; location: string; dates: string };
+
+/** Book fairs the house attends. Ordered chronologically; update dates yearly. */
+export const bookFairs: BookFair[] = [
+  {
+    name: "Manila International Book Fair",
+    location: "SMX Convention Center, Pasay City",
+    dates: "9–13 September 2026",
+  },
+  { name: "Frankfurt Book Fair", location: "Messe Frankfurt, Germany", dates: "7–11 October 2026" },
+  { name: "London Book Fair", location: "ExCeL London, United Kingdom", dates: "16–18 March 2027" },
+];
 
 /** Short press accolades for the infinite marquee ticker. */
 export const pressQuotes: { quote: string; source: string }[] = [
