@@ -120,13 +120,22 @@ export function SubPageHeader() {
                 transition={{ delay: 0.06 * siteConfig.nav.length + 0.08, duration: 0.4 }}
                 className="mt-8 flex flex-col items-start gap-6"
               >
-                <Link
-                  href="/contact"
-                  onClick={() => setMenuOpen(false)}
-                  className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
-                >
-                  Contact
-                </Link>
+                <div className="flex flex-col items-start gap-4">
+                  <Link
+                    href="/book-fairs"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
+                  >
+                    Book Fairs
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </div>
                 <Button variant="solid" size="lg" href="/#begin" onClick={() => setMenuOpen(false)}>
                   Begin your book
                 </Button>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 import { Container } from "@/components/ui/Container";
 import { RevealText } from "@/components/ui/RevealText";
@@ -109,6 +110,12 @@ export default function ContactPage() {
                 </li>
               ))}
             </ul>
+            <Link
+              href="/book-fairs"
+              className="text-accent hover:text-gold-300 mt-6 inline-block font-mono text-xs tracking-[0.15em] uppercase underline-offset-4 transition-colors hover:underline"
+            >
+              See the full schedule &rarr;
+            </Link>
           </div>
         </Container>
       </main>

@@ -460,18 +460,63 @@ export const contactContent = {
   },
 } as const;
 
-export type BookFair = { name: string; location: string; dates: string };
+export type BookFair = {
+  name: string;
+  city: string;
+  location: string;
+  dates: string;
+  /** What the fair is and what we do there — shown on the Book Fairs page. */
+  blurb: string;
+  /** Procedural backdrop variant used when no photo/clip is supplied. */
+  scene: "library" | "desk" | "press" | "forest" | "hall";
+  /** Optional real photo under /public (swaps in over the backdrop). */
+  image?: string;
+  /** Optional muted b-roll clip under /public (plays over the backdrop). */
+  video?: string;
+};
 
 /** Book fairs the house attends. Ordered chronologically; update dates yearly. */
 export const bookFairs: BookFair[] = [
   {
     name: "Manila International Book Fair",
+    city: "Manila",
     location: "SMX Convention Center, Pasay City",
     dates: "9–13 September 2026",
+    scene: "library",
+    image: "/images/fairs/manila.png",
+    blurb:
+      "The largest book fair in the Philippines and a Southeast Asian crossroads. We bring the full catalogue, meet regional booksellers, and listen for the voices we'll carry into translation.",
   },
-  { name: "Frankfurt Book Fair", location: "Messe Frankfurt, Germany", dates: "7–11 October 2026" },
-  { name: "London Book Fair", location: "ExCeL London, United Kingdom", dates: "16–18 March 2027" },
+  {
+    name: "Frankfurt Book Fair",
+    city: "Frankfurt",
+    location: "Messe Frankfurt, Germany",
+    dates: "7–11 October 2026",
+    scene: "press",
+    image: "/images/fairs/frankfurt.png",
+    blurb:
+      "The centre of the publishing world. Five days of rights deals, translation meetings, and long dinners where next year's reading is quietly decided.",
+  },
+  {
+    name: "London Book Fair",
+    city: "London",
+    location: "ExCeL London, United Kingdom",
+    dates: "16–18 March 2027",
+    scene: "hall",
+    image: "/images/fairs/london.png",
+    blurb:
+      "The spring gathering of the English-language trade — rights tables, scouts, and agents, and the first proper look at the season ahead. In 2027 it moves to ExCeL, and so do we.",
+  },
 ];
+
+export const bookFairsPageContent = {
+  eyebrow: "Where to find us",
+  headline: "We take our books to the world.",
+  intro:
+    "A book is finished at the printer, but it isn't done. Each year we pack the catalogue and bring our authors to the fairs where rights are sold, translations begin, and readers are won. If you're attending, come find us — the coffee is on Bookture.",
+  /** Optional muted hero clip under /public; empty falls back to a procedural backdrop. */
+  heroVideo: "",
+} as const;
 
 /** Short press accolades for the infinite marquee ticker. */
 export const pressQuotes: { quote: string; source: string }[] = [
@@ -630,6 +675,7 @@ export const footerContent = {
       links: [
         { label: "Featured works", href: "/#works" },
         { label: "Awards", href: "/#awards" },
+        { label: "Book fairs", href: "/book-fairs" },
         { label: "The studio", href: "/#studio" },
         { label: "Author voices", href: "/#voices" },
       ] satisfies NavLink[],

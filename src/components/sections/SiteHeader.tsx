@@ -73,7 +73,7 @@ export function SiteHeader() {
             <Logo variant="mark" height={46} withWordmark />
           </span>
 
-          <nav className="hidden items-center gap-9 md:flex">
+          <nav className="hidden items-center gap-7 md:flex">
             {siteConfig.nav.map((link) => (
               <a
                 key={link.href}
@@ -87,6 +87,12 @@ export function SiteHeader() {
                 {link.label}
               </a>
             ))}
+            <Link
+              href="/book-fairs"
+              className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.15em] uppercase transition-colors duration-300"
+            >
+              Book Fairs
+            </Link>
           </nav>
 
           <div className="flex items-center gap-4">
@@ -169,13 +175,22 @@ export function SiteHeader() {
                 transition={{ delay: 0.06 * siteConfig.nav.length + 0.08, duration: 0.4 }}
                 className="mt-8 flex flex-col items-start gap-6"
               >
-                <Link
-                  href="/contact"
-                  onClick={() => setMenuOpen(false)}
-                  className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
-                >
-                  Contact
-                </Link>
+                <div className="flex flex-col items-start gap-4">
+                  <Link
+                    href="/book-fairs"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
+                  >
+                    Book Fairs
+                  </Link>
+                  <Link
+                    href="/contact"
+                    onClick={() => setMenuOpen(false)}
+                    className="text-parchment-300 hover:text-accent font-mono text-xs tracking-[0.2em] uppercase transition-colors"
+                  >
+                    Contact
+                  </Link>
+                </div>
                 <Button variant="solid" size="lg" onClick={() => goTo("#begin")}>
                   Begin your book
                 </Button>
