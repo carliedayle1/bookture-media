@@ -17,12 +17,12 @@ export const siteConfig = {
   phone: "+1 778 656 0875",
   email: "support@bookturemedia.org",
   address: {
-    line1: "Studio 5 — 108 West Cordova Street",
-    line2: "Vancouver, BC V6B 1E4",
+    line1: "Studio 5 — 108 Princess Street",
+    line2: "Winnipeg, MB R3B 1K7",
     country: "Canada",
-    // Gastown / downtown Vancouver — centres the contact-page map.
-    lat: 49.2827,
-    lng: -123.1207,
+    // Exchange District, Winnipeg — centres the contact-page map.
+    lat: 49.8994,
+    lng: -97.14,
   },
   nav: [
     { label: "The Craft", href: "#craft" },
@@ -442,11 +442,11 @@ export const awardsContent = {
 
 export const contactContent = {
   eyebrow: "Contact",
-  headline: "Come find us in Vancouver.",
+  headline: "Come find us in Manitoba.",
   intro:
     "Whether you're an author with a manuscript, a bookseller, or a reader with a question — we'd love to hear from you. Send a note and a real person will write back.",
   hoursLabel: "Studio hours",
-  hours: "Monday–Friday · 9am–5pm PT",
+  hours: "Monday–Friday · 9am–5pm CT",
   formNote: "We reply within a few working days — from a name, not a noreply.",
   success: {
     title: "Your message is on its way.",

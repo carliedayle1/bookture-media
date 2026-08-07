@@ -10,7 +10,7 @@ import { siteConfig, contactContent as c, bookFairs } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Contact",
-  description: "Get in touch with Bookture Media — our studio in Vancouver, Canada.",
+  description: "Get in touch with Bookture Media — our studio in Manitoba, Canada.",
 };
 
 const { lat, lng } = siteConfig.address;
@@ -67,7 +67,7 @@ export default function ContactPage() {
               <div>
                 <div className="border-foreground/10 relative aspect-[4/3] overflow-hidden rounded-2xl border">
                   <iframe
-                    title="Bookture Media studio location in Vancouver, Canada"
+                    title="Bookture Media studio location in Winnipeg, Manitoba, Canada"
                     src={MAP_EMBED}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
