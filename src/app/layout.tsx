@@ -30,8 +30,7 @@ const SITE_DESCRIPTION =
   "A boutique literary publisher. We shape manuscripts into books made to last — cinematic craft, editorial rigour, and a legacy worth keeping.";
 
 export const metadata: Metadata = {
-  // TODO: set to the real production origin before launch.
-  metadataBase: new URL("https://bookture.media"),
+  metadataBase: new URL("https://bookturemedia.org"),
   title: {
     default: "Bookture Media — Empowering Stories for Future Generations",
     template: "%s · Bookture Media",
