@@ -7,7 +7,6 @@ import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
 import { GoldParticles } from "@/components/ui/GoldParticles";
 import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
 import { AmbientGlow } from "@/components/ui/AmbientGlow";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { SiteFooter } from "@/components/sections/SiteFooter";
 import { SubPageHeader } from "@/components/sections/SubPageHeader";
 import { FairFeatures } from "@/components/sections/FairFeatures";
@@ -27,11 +26,7 @@ export default function BookFairsPage() {
       <main id="main">
         {/* Cinematic hero */}
         <section className="relative isolate flex min-h-[72vh] items-center overflow-hidden pt-[var(--header-height)]">
-          {c.heroVideo ? (
-            <AmbientVideo src={c.heroVideo} className="absolute inset-0 -z-10 h-full w-full object-cover" />
-          ) : (
-            <AtmosphereBackground variant="hall" kenBurns />
-          )}
+          <AtmosphereBackground variant="hall" kenBurns />
           <AmbientGlow />
           <div aria-hidden className="pointer-events-none absolute inset-0">
             <GoldParticles density={28} />

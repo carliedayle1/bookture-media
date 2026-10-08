@@ -4,8 +4,6 @@ import { useRef } from "react";
 import Image from "next/image";
 
 import { OrnamentDivider } from "@/components/ui/OrnamentDivider";
-import { AtmosphereBackground } from "@/components/ui/AtmosphereBackground";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { gsap, ScrollTrigger } from "@/lib/gsap";
 import { useAnimation } from "@/hooks/useAnimation";
 import { bookFairs } from "@/lib/content";
@@ -59,23 +57,15 @@ export function FairFeatures() {
                 i % 2 === 1 ? "lg:order-2" : "lg:order-1",
               )}
             >
-              {fair.video ? (
-                <div className="fair-parallax absolute inset-x-0 -top-[8%] -bottom-[8%] will-change-transform">
-                  <AmbientVideo src={fair.video} className="absolute inset-0 h-full w-full object-cover" />
-                </div>
-              ) : fair.image ? (
-                <div className="fair-parallax absolute inset-x-0 -top-[8%] -bottom-[8%] will-change-transform">
-                  <Image
-                    src={fair.image}
-                    alt={`${fair.name} — ${fair.city}`}
-                    fill
-                    sizes="(min-width: 1024px) 600px, 100vw"
-                    className="object-cover"
-                  />
-                </div>
-              ) : (
-                <AtmosphereBackground variant={fair.scene} kenBurns />
-              )}
+              <div className="fair-parallax absolute inset-x-0 -top-[8%] -bottom-[8%] will-change-transform">
+                <Image
+                  src={fair.image}
+                  alt={`${fair.name} — ${fair.city}`}
+                  fill
+                  sizes="(min-width: 1024px) 600px, 100vw"
+                  className="object-cover"
+                />
+              </div>
               {/* legibility scrim + city label */}
               <div aria-hidden className="from-ink-950/75 absolute inset-0 bg-gradient-to-t to-transparent" />
               <div className="absolute inset-0 flex items-end p-8 lg:p-10">

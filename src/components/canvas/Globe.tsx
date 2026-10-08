@@ -20,8 +20,7 @@ function latLngToVec3(lat: number, lng: number, r = R) {
   );
 }
 
-/** Stylized glowing ocean planet — used when no Earth texture is configured
- *  (or as the Suspense fallback while textures load). */
+/** Stylized glowing ocean planet — the Suspense fallback while textures load. */
 function StylizedSurface() {
   return (
     <mesh>
@@ -39,18 +38,17 @@ function StylizedSurface() {
 
 /** Photoreal Earth: day map + optional drifting cloud layer. Loaded
  *  declaratively via drei useTexture so the map reliably renders on load. */
-function EarthSurface({ dayUrl, cloudsUrl }: { dayUrl: string; cloudsUrl?: string }) {
+function EarthSurface({ dayUrl, cloudsUrl }: { dayUrl: string; cloudsUrl: string }) {
   const invalidate = useThree((s) => s.invalidate);
   const cloudsRef = useRef<THREE.Mesh>(null);
 
-  const urls = cloudsUrl ? [dayUrl, cloudsUrl] : [dayUrl];
-  const textures = useTexture(urls);
+  const textures = useTexture([dayUrl, cloudsUrl]);
   const day = textures[0];
-  const clouds = cloudsUrl ? textures[1] : null;
+  const clouds = textures[1];
 
   useEffect(() => {
-    if (day) day.colorSpace = THREE.SRGBColorSpace;
-    if (clouds) clouds.colorSpace = THREE.SRGBColorSpace;
+    day.colorSpace = THREE.SRGBColorSpace;
+    clouds.colorSpace = THREE.SRGBColorSpace;
     invalidate(); // force a frame once textures resolve
   }, [day, clouds, invalidate]);
 
@@ -72,49 +70,28 @@ function EarthSurface({ dayUrl, cloudsUrl }: { dayUrl: string; cloudsUrl?: strin
           metalness={0.05}
         />
       </mesh>
-      {clouds ? (
-        <mesh ref={cloudsRef}>
-          <sphereGeometry args={[R * 1.012, 64, 64]} />
-          <meshStandardMaterial
-            map={clouds}
-            alphaMap={clouds}
-            transparent
-            opacity={0.45}
-            depthWrite={false}
-          />
-        </mesh>
-      ) : null}
+      <mesh ref={cloudsRef}>
+        <sphereGeometry args={[R * 1.012, 64, 64]} />
+        <meshStandardMaterial
+          map={clouds}
+          alphaMap={clouds}
+          transparent
+          opacity={0.45}
+          depthWrite={false}
+        />
+      </mesh>
     </>
   );
 }
 
 /**
  * A slowly rotating globe with glowing destination hubs, distribution arcs, and
- * light packets traveling each arc. Photoreal Earth when textures are set,
- * stylized planet otherwise.
+ * light packets traveling each arc, over a photoreal Earth.
  */
 export function Globe() {
   const group = useRef<THREE.Group>(null);
   const packets = useRef<THREE.Group>(null);
 
-  const hasTexture = Boolean(reachContent.earthTexture);
-
-  const dotGeo = useMemo(() => {
-    const N = 1400;
-    const positions = new Float32Array(N * 3);
-    const golden = Math.PI * (3 - Math.sqrt(5));
-    for (let i = 0; i < N; i++) {
-      const y = 1 - (i / (N - 1)) * 2;
-      const radius = Math.sqrt(1 - y * y);
-      const theta = golden * i;
-      positions[i * 3] = Math.cos(theta) * radius * R * 1.004;
-      positions[i * 3 + 1] = y * R * 1.004;
-      positions[i * 3 + 2] = Math.sin(theta) * radius * R * 1.004;
-    }
-    const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-    return g;
-  }, []);
 
   const hubs = useMemo(
     () => reachContent.hubs.map((h) => ({ city: h.city, v: latLngToVec3(h.lat, h.lng) })),
@@ -164,16 +141,9 @@ export function Globe() {
 
   return (
     <group ref={group} rotation={[0.32, 0, 0.05]}>
-      {hasTexture ? (
-        <Suspense fallback={<StylizedSurface />}>
-          <EarthSurface
-            dayUrl={reachContent.earthTexture as string}
-            cloudsUrl={reachContent.cloudsTexture || undefined}
-          />
-        </Suspense>
-      ) : (
-        <StylizedSurface />
-      )}
+      <Suspense fallback={<StylizedSurface />}>
+        <EarthSurface dayUrl={reachContent.earthTexture} cloudsUrl={reachContent.cloudsTexture} />
+      </Suspense>
 
       {/* atmosphere halo */}
       <mesh>
@@ -184,13 +154,6 @@ export function Globe() {
         <sphereGeometry args={[R * 1.03, 64, 64]} />
         <meshBasicMaterial color="#8fbcf5" transparent opacity={0.07} side={THREE.BackSide} />
       </mesh>
-
-      {/* graticule dots only in stylized mode (real Earth doesn't need them) */}
-      {!hasTexture ? (
-        <points geometry={dotGeo}>
-          <pointsMaterial color="#dcd0b4" size={0.024} sizeAttenuation transparent opacity={0.7} />
-        </points>
-      ) : null}
 
       {/* hub markers */}
       {hubs.map((h) => (

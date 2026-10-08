@@ -45,7 +45,7 @@ export default function ContactPage() {
             <div className="flex flex-col gap-8">
               <dl className="grid gap-6 sm:grid-cols-2">
                 <ContactItem label="By phone">
-                  <a href={`tel:${siteConfig.phone.replace(/\s/g, "")}`} className="hover:text-accent transition-colors">
+                  <a href={`tel:${siteConfig.phone.replace(/[^\d+]/g, "")}`} className="hover:text-accent transition-colors">
                     {siteConfig.phone}
                   </a>
                 </ContactItem>
@@ -67,7 +67,7 @@ export default function ContactPage() {
               <div>
                 <div className="border-foreground/10 relative aspect-[4/3] overflow-hidden rounded-2xl border">
                   <iframe
-                    title="Bookture Media studio location in Winnipeg, Manitoba, Canada"
+                    title="Bookture Media studio location in Neepawa, Manitoba, Canada"
                     src={MAP_EMBED}
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"

@@ -7,22 +7,22 @@
  * wording freely; the shapes are what the components depend on.
  */
 
-export type NavLink = { label: string; href: string };
-export type SocialLink = { label: string; href: string; handle: string };
+type NavLink = { label: string; href: string };
+type SocialLink = { label: string; href: string; handle: string };
 
 export const siteConfig = {
   name: "Bookture Media",
   legalName: "Bookture Media LLC",
   tagline: "Empowering Stories for Future Generations",
-  phone: "+1 778 656 0875",
+  phone: "+1 (778) 656-0869",
   email: "support@bookturemedia.org",
   address: {
-    line1: "Studio 5 — 108 Princess Street",
-    line2: "Winnipeg, MB R3B 1K7",
+    line1: "298 Brydon St. Unit 1",
+    line2: "Neepawa, Manitoba R0J 1H0",
     country: "Canada",
-    // Exchange District, Winnipeg — centres the contact-page map.
-    lat: 49.8994,
-    lng: -97.14,
+    // Neepawa town centre — centres the contact-page map.
+    lat: 50.2289,
+    lng: -99.4663,
   },
   nav: [
     { label: "The Craft", href: "#craft" },
@@ -38,32 +38,28 @@ export const siteConfig = {
   ] satisfies SocialLink[],
 } as const;
 
-export type HeroContent = {
+type HeroContent = {
   eyebrow: string;
   /** Headline split into runs; `emphasis` runs render in gold italic. */
   headline: { text: string; emphasis?: boolean }[];
   lede: string;
   primaryCta: NavLink;
   secondaryCta: NavLink;
-  /** Optional looping background video (muted). Empty = procedural backdrop. */
-  backgroundVideo?: string;
 };
 
 export const heroContent: HeroContent = {
   eyebrow: "Independent literary publishing since 1994",
-  // SWAP POINT: drop a looping hero clip here, e.g. "/video/hero-loop.mp4".
-  backgroundVideo: "",
   headline: [
     { text: "We turn manuscripts into a " },
     { text: "legacy", emphasis: true },
     { text: " worth keeping." },
   ],
-  lede: "Bookture Media is a boutique publishing house for writers who refuse to be forgettable. We edit with rigour, design with intent, and print books made to outlast the shelf they sit on.",
+  lede: "Bookture Media is a boutique publishing house and marketing agency helping authors professionally publish, build their brands, and reach more readers. We provide editing, proofreading, book design, publishing setup, printing, eBook conversion, distribution, author websites, marketing, publicity, and sales support.",
   primaryCta: { label: "Begin your book", href: "#begin" },
   secondaryCta: { label: "See our authors", href: "#works" },
 };
 
-export type Metric = { value: number; suffix?: string; label: string; format?: "plain" | "comma" };
+type Metric = { value: number; suffix?: string; label: string; format?: "plain" | "comma" };
 
 export const trustMetrics: Metric[] = [
   { value: 240, suffix: "+", label: "Titles brought to the shelf" },
@@ -72,7 +68,7 @@ export const trustMetrics: Metric[] = [
   { value: 12, label: "Editors, designers & typesetters" },
 ];
 
-export type ManifestoContent = {
+type ManifestoContent = {
   chapter: { numeral: string; label: string };
   lead: string;
   /** Sequential lines revealed as the section is scrubbed. */
@@ -97,7 +93,7 @@ export const manifestoContent: ManifestoContent = {
   ],
 };
 
-export type ProcessStep = { numeral: string; title: string; body: string };
+type ProcessStep = { numeral: string; title: string; body: string };
 
 export const processSteps: ProcessStep[] = [
   {
@@ -276,12 +272,11 @@ export const featuredWorks: Work[] = [
   },
 ];
 
-export type StudioContent = {
+type StudioContent = {
   chapter: { numeral: string; label: string };
   overlay: string;
   subline: string;
   videoSrc: string;
-  poster: string;
 };
 
 export const studioContent: StudioContent = {
@@ -289,10 +284,9 @@ export const studioContent: StudioContent = {
   overlay: "Every book is printed on paper that remembers the ink.",
   subline: "Inside the bindery, where the last decisions are made by hand.",
   videoSrc: "/video/intro.mp4",
-  poster: "/brand/studio-poster.svg",
 };
 
-export type Testimonial = { quote: string; name: string; role: string };
+type Testimonial = { quote: string; name: string; role: string };
 
 export const testimonials: Testimonial[] = [
   {
@@ -321,19 +315,18 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-export type ReachHub = { city: string; country: string; lat: number; lng: number };
+type ReachHub = { city: string; country: string; lat: number; lng: number };
 
-export type ReachContent = {
+type ReachContent = {
   chapter: { numeral: string; label: string };
   headline: string;
   stat: string;
   copy: string;
   hubs: ReachHub[];
-  /** Optional equirectangular Earth day map for a photoreal globe. Empty =
-   *  stylized glowing planet. SWAP POINT: e.g. "/textures/earth-day.jpg". */
-  earthTexture?: string;
-  /** Optional equirectangular clouds map (grayscale/alpha) for a cloud layer. */
-  cloudsTexture?: string;
+  /** Equirectangular Earth day map for the globe. */
+  earthTexture: string;
+  /** Equirectangular clouds map (grayscale/alpha) for the cloud layer. */
+  cloudsTexture: string;
 };
 
 export const reachContent: ReachContent = {
@@ -355,7 +348,7 @@ export const reachContent: ReachContent = {
   ],
 };
 
-export type CtaContent = {
+type CtaContent = {
   chapter: { numeral: string; label: string };
   headline: { text: string; emphasis?: boolean }[];
   intro: string;
@@ -366,7 +359,7 @@ export type CtaContent = {
 export const ctaContent: CtaContent = {
   chapter: { numeral: "IX", label: "Begin" },
   headline: [{ text: "Send us the first " }, { text: "fifty pages", emphasis: true }, { text: "." }],
-  intro: "We read every submission ourselves. Tell us who you are and what you're writing — you'll hear back from a real editor, not an auto-reply.",
+  intro: "Book a consultation today to discuss your book, publishing goals, and personalized marketing strategy. Publish under your name. Build your brand. Reach more readers—with Bookture Media supporting your marketing for a lifetime.",
   loadingLabel: "Reaching the editor's desk…",
   success: {
     title: "It's on the editor's desk.",
@@ -460,19 +453,15 @@ export const contactContent = {
   },
 } as const;
 
-export type BookFair = {
+type BookFair = {
   name: string;
   city: string;
   location: string;
   dates: string;
   /** What the fair is and what we do there — shown on the Book Fairs page. */
   blurb: string;
-  /** Procedural backdrop variant used when no photo/clip is supplied. */
-  scene: "library" | "desk" | "press" | "forest" | "hall";
-  /** Optional real photo under /public (swaps in over the backdrop). */
-  image?: string;
-  /** Optional muted b-roll clip under /public (plays over the backdrop). */
-  video?: string;
+  /** Photo under /public. */
+  image: string;
 };
 
 /** Book fairs the house attends. Ordered chronologically; update dates yearly. */
@@ -482,7 +471,6 @@ export const bookFairs: BookFair[] = [
     city: "Manila",
     location: "SMX Convention Center, Pasay City",
     dates: "9–13 September 2026",
-    scene: "library",
     image: "/images/fairs/manila.png",
     blurb:
       "The largest book fair in the Philippines and a Southeast Asian crossroads. We bring the full catalogue, meet regional booksellers, and listen for the voices we'll carry into translation.",
@@ -492,7 +480,6 @@ export const bookFairs: BookFair[] = [
     city: "Frankfurt",
     location: "Messe Frankfurt, Germany",
     dates: "7–11 October 2026",
-    scene: "press",
     image: "/images/fairs/frankfurt.png",
     blurb:
       "The centre of the publishing world. Five days of rights deals, translation meetings, and long dinners where next year's reading is quietly decided.",
@@ -502,7 +489,6 @@ export const bookFairs: BookFair[] = [
     city: "London",
     location: "ExCeL London, United Kingdom",
     dates: "16–18 March 2027",
-    scene: "hall",
     image: "/images/fairs/london.png",
     blurb:
       "The spring gathering of the English-language trade — rights tables, scouts, and agents, and the first proper look at the season ahead. In 2027 it moves to ExCeL, and so do we.",
@@ -514,8 +500,6 @@ export const bookFairsPageContent = {
   headline: "We take our books to the world.",
   intro:
     "A book is finished at the printer, but it isn't done. Each year we pack the catalogue and bring our authors to the fairs where rights are sold, translations begin, and readers are won. If you're attending, come find us — the coffee is on Bookture.",
-  /** Optional muted hero clip under /public; empty falls back to a procedural backdrop. */
-  heroVideo: "",
 } as const;
 
 /** Short press accolades for the infinite marquee ticker. */
@@ -540,15 +524,13 @@ export const chapters: { numeral: string; id: string; label: string }[] = [
   { numeral: "IX", id: "begin", label: "Begin" },
 ];
 
-export type AuthorSpotlightContent = {
+type AuthorSpotlightContent = {
   chapter: { numeral: string; label: string };
   eyebrow: string;
   name: string;
   title: string;
   bio: string;
   pullQuote: string;
-  /** Optional interview clip (muted loop / poster). Empty = placeholder frame. */
-  videoSrc: string;
 };
 
 export const authorSpotlightContent: AuthorSpotlightContent = {
@@ -558,11 +540,9 @@ export const authorSpotlightContent: AuthorSpotlightContent = {
   title: "Author of The Salt Almanac",
   bio: "Marisa spent nine years and three abandoned drafts on the book that would become The Salt Almanac. We sat with her in the reading room to talk about the sea, memory, and the ledger that started writing back.",
   pullQuote: "They didn't publish my book. They helped me finish it, then made it beautiful.",
-  // SWAP POINT: drop an interview clip here, e.g. "/video/spotlight.mp4".
-  videoSrc: "",
 };
 
-export type ServiceStep = { step: string; detail: string };
+type ServiceStep = { step: string; detail: string };
 export type Service = {
   title: string;
   body: string;
@@ -572,7 +552,7 @@ export type Service = {
   process: ServiceStep[];
 };
 
-export type ServicesContent = {
+type ServicesContent = {
   chapter: { numeral: string; label: string };
   headline: string;
   intro: string;
@@ -582,7 +562,7 @@ export type ServicesContent = {
 export const servicesContent: ServicesContent = {
   chapter: { numeral: "VII", label: "What We Offer" },
   headline: "More than a printer. A partner for the whole life of the book.",
-  intro: "Publishing a book is the beginning. Getting it read is the work. Beyond editing and printing, we run the campaigns, the submissions, and the events that carry a title into the world.",
+  intro: "Publish your book under your own name and author brand—with Bookture Media supporting you every step of the way. From preparing your manuscript and creating a professional book to launching, promoting, and growing your audience, our team is here to help.",
   items: [
     {
       title: "Media Campaigns",

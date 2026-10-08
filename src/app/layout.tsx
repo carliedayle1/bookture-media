@@ -27,7 +27,7 @@ const spaceMono = Space_Mono({
 });
 
 const SITE_DESCRIPTION =
-  "A boutique literary publisher. We shape manuscripts into books made to last — cinematic craft, editorial rigour, and a legacy worth keeping.";
+  "A boutique publishing house and marketing agency helping authors professionally publish, build their brands, and reach more readers.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bookturemedia.org"),

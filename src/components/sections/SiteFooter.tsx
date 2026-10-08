@@ -21,7 +21,7 @@ export function SiteFooter() {
                 Call us
               </span>
               <a
-                href={`tel:${siteConfig.phone.replace(/\s/g, "")}`}
+                href={`tel:${siteConfig.phone.replace(/[^\d+]/g, "")}`}
                 className="text-parchment-300 hover:text-accent inline-flex items-center gap-2.5 font-mono text-sm tracking-wide transition-colors duration-300"
               >
                 <svg

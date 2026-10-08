@@ -14,7 +14,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: `${siteConfig.name} — ${siteConfig.tagline}`,
     short_name: siteConfig.name,
     description:
-      "A boutique literary publisher. We shape manuscripts into books made to last.",
+      "A boutique publishing house and marketing agency helping authors publish, build their brands, and reach more readers.",
     start_url: "/",
     display: "standalone",
     // Matches --color-ink-950, the dark-theme page ground.

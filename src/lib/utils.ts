@@ -6,7 +6,7 @@
  * concatenation is sufficient. Author later classes to win by ordering, not by
  * relying on merge resolution.
  */
-export type ClassValue = string | number | false | null | undefined;
+type ClassValue = string | number | false | null | undefined;
 
 export function cn(...inputs: ClassValue[]): string {
   return inputs.filter(Boolean).join(" ");

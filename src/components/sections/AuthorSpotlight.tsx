@@ -2,19 +2,15 @@ import { Container } from "@/components/ui/Container";
 import { Section } from "@/components/ui/Section";
 import { RevealText } from "@/components/ui/RevealText";
 import { ThemedBackground } from "@/components/ui/ThemedBackground";
-import { AmbientVideo } from "@/components/ui/AmbientVideo";
 import { GoldParticles } from "@/components/ui/GoldParticles";
 import { AmbientGlow } from "@/components/ui/AmbientGlow";
 import { authorSpotlightContent as c } from "@/lib/content";
 
 /**
- * Author Spotlight — a featured author with an interview video. Phase-1 style
- * placeholder frame (play button over an atmospheric backdrop) until a clip is
- * supplied via authorSpotlightContent.videoSrc.
+ * Author Spotlight — a featured author beside a placeholder interview frame
+ * (play button over an atmospheric backdrop).
  */
 export function AuthorSpotlight() {
-  const hasVideo = Boolean(c.videoSrc);
-
   return (
     <Section id="spotlight" chapter={c.chapter} theme="ink-900">
       <AmbientGlow />
@@ -26,9 +22,6 @@ export function AuthorSpotlight() {
           {/* video / placeholder frame */}
           <div className="border-foreground/10 relative isolate aspect-video overflow-hidden rounded-2xl border">
             <ThemedBackground name="spotlight" scrim="center" />
-            {hasVideo ? (
-              <AmbientVideo src={c.videoSrc} className="absolute inset-0 h-full w-full object-cover" />
-            ) : null}
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
               <span className="relative flex h-20 w-20 items-center justify-center">
                 {/* radar-ping rings — a moving invite to play */}
