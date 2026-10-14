@@ -531,6 +531,8 @@ type AuthorSpotlightContent = {
   title: string;
   bio: string;
   pullQuote: string;
+  /** Vimeo player embed URL for the interview (`h` is the unlisted-video hash). */
+  videoEmbed: string;
 };
 
 export const authorSpotlightContent: AuthorSpotlightContent = {
@@ -540,6 +542,7 @@ export const authorSpotlightContent: AuthorSpotlightContent = {
   title: "Author of The Salt Almanac",
   bio: "Marisa spent nine years and three abandoned drafts on the book that would become The Salt Almanac. We sat with her in the reading room to talk about the sea, memory, and the ledger that started writing back.",
   pullQuote: "They didn't publish my book. They helped me finish it, then made it beautiful.",
+  videoEmbed: "https://player.vimeo.com/video/1228386856?h=4f7b71a572&dnt=1",
 };
 
 type ServiceStep = { step: string; detail: string };

@@ -7,8 +7,7 @@ import { AmbientGlow } from "@/components/ui/AmbientGlow";
 import { authorSpotlightContent as c } from "@/lib/content";
 
 /**
- * Author Spotlight — a featured author beside a placeholder interview frame
- * (play button over an atmospheric backdrop).
+ * Author Spotlight — a featured author beside their Vimeo interview.
  */
 export function AuthorSpotlight() {
   return (
@@ -19,30 +18,18 @@ export function AuthorSpotlight() {
       </div>
       <Container>
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
-          {/* video / placeholder frame */}
+          {/* interview video */}
           <div className="border-foreground/10 relative isolate aspect-video overflow-hidden rounded-2xl border">
             <ThemedBackground name="spotlight" scrim="center" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-5">
-              <span className="relative flex h-20 w-20 items-center justify-center">
-                {/* radar-ping rings — a moving invite to play */}
-                <span
-                  aria-hidden
-                  className="ambient border-gold-500/40 absolute inset-0 rounded-full border [animation:var(--animate-hub)]"
-                />
-                <span
-                  aria-hidden
-                  className="ambient border-gold-500/30 absolute inset-0 rounded-full border [animation:var(--animate-hub)] [animation-delay:-1.4s]"
-                />
-                <span className="border-gold-500/50 bg-ink-950/30 relative flex h-20 w-20 items-center justify-center rounded-full border backdrop-blur-sm">
-                  <svg width="22" height="22" viewBox="0 0 24 24" className="text-accent ml-1" fill="currentColor">
-                    <path d="M6 4l14 8-14 8z" />
-                  </svg>
-                </span>
-              </span>
-              <span className="text-parchment-300 font-mono text-xs tracking-[0.3em] uppercase">
-                Watch the conversation
-              </span>
-            </div>
+            <iframe
+              src={c.videoEmbed}
+              title={`${c.eyebrow}: ${c.name}`}
+              loading="lazy"
+              allow="autoplay; fullscreen; picture-in-picture"
+              allowFullScreen
+              className="absolute inset-0 h-full w-full"
+              style={{ border: 0 }}
+            />
           </div>
 
           {/* author text */}
