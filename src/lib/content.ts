@@ -538,10 +538,10 @@ type AuthorSpotlightContent = {
 export const authorSpotlightContent: AuthorSpotlightContent = {
   chapter: { numeral: "VI", label: "Author Spotlight" },
   eyebrow: "In conversation",
-  name: "Marisa Okonkwo",
-  title: "Author of The Salt Almanac",
-  bio: "Marisa spent nine years and three abandoned drafts on the book that would become The Salt Almanac. We sat with her in the reading room to talk about the sea, memory, and the ledger that started writing back.",
-  pullQuote: "They didn't publish my book. They helped me finish it, then made it beautiful.",
+  name: "Wanda Kanten Hartfield",
+  title: "Author of UNPLUG! 101 Ways to Pull Your Kids Away from Their Electronics",
+  bio: "Raised in Sylvan Lake, Alberta, Wanda became “Miss Wanda,” host of Romper Room, delighting millions of children in the Magic Mirror — then tested her ideas for real as the mother of two sons. UNPLUG! is where those ideas landed: 101 things to do instead of screens. Her husband, Michael Hartfield, sits down to talk about Wanda's life and the book she left behind.",
+  pullQuote: "If you teach your child to self-entertain, dependence on all electronics is diminished.",
   videoEmbed: "https://player.vimeo.com/video/1228386856?h=4f7b71a572&dnt=1",
 };
 
